@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-11-06T21:29:33+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">XIESUNSUN的秘密小屋</title><subtitle>愿你是阳光，明媚不忧伤！</subtitle><author><name>xiesunsun</name></author><entry><title type="html">MARKDOWN用法</title><link href="http://localhost:4000/markdown.html" rel="alternate" type="text/html" title="MARKDOWN用法" /><published>2021-11-06T00:00:00+08:00</published><updated>2021-11-06T00:00:00+08:00</updated><id>http://localhost:4000/markdown</id><content type="html" xml:base="http://localhost:4000/markdown.html">&lt;h1 id=&quot;标题&quot;&gt;标题&lt;/h1&gt;
+&lt;h2 id=&quot;二级标题&quot;&gt;二级标题&lt;/h2&gt;
+&lt;h3 id=&quot;三级标题&quot;&gt;三级标题&lt;/h3&gt;
+&lt;h4 id=&quot;四级标题&quot;&gt;四级标题&lt;/h4&gt;
+&lt;p&gt;依次类推&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;正文直接写就好了，但要注意如果要换行的话，是需要空一行才可以的！
+    &lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt; #include&amp;lt;stdio.h&amp;gt;
+ int main(void)
+ {
+  for(int i=0;i&amp;lt;100;i++)
+  {
+      printf(&quot;now value is %d\n&quot;,i);
+  }
+  return 0;
+ }
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;python代码可以这么写
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;printnum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;continue&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;__main__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;printnum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;我只能说一句话markdown太厉害了，牛！&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;多级列表的产生&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;注意需要在序号的后面需要加上一个空格才会产生列表的效果
+    &lt;ol&gt;
+      &lt;li&gt;产生多级的效果需要在指定的上一级标签后回车，加tab键产生效果&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;无序列表的操作&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;一个横线加上一个空格就可以生成
+    &lt;ul&gt;
+      &lt;li&gt;同样是支持多级的无序列表的，与有序列表的操作是相同的&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;这样是加粗的操作，要用到两个星号&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;这样是斜体的操作，注意只需要用到一个星号&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;这样是既加粗有斜体的操作&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;插入表格的操作&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;表头&lt;/th&gt;
+      &lt;th&gt;表头&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;表格内容&lt;/td&gt;
+      &lt;td&gt;可以写的不整齐但是它是会自动把你变成一个封闭的表格的&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;插入图片需要注意相应的路径，可以使用插件past image 还是挺好用的！&lt;/strong&gt;
+&lt;img src=&quot;assets/img/../../../_site/assets/img/posts/2021-11-6/2021-11-06-21-10-39.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;给指定文字超链接&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;例如这里我给&lt;a href=&quot;https://www.baidu.com&quot;&gt;百度&lt;/a&gt;这个文字超链接&lt;/p&gt;</content><author><name>xiesunsun</name></author><category term="观点" /><category term="杂" /><category term="教程" /><summary type="html">标题 二级标题 三级标题 四级标题 依次类推 正文直接写就好了，但要注意如果要换行的话，是需要空一行才可以的！ #include&amp;lt;stdio.h&amp;gt; int main(void) { for(int i=0;i&amp;lt;100;i++) { printf(&quot;now value is %d\n&quot;,i); } return 0; } python代码可以这么写 def printnum(): for i in range(10): if i%2==0: print(i) else: continue if __name__==&quot;__main__&quot;: num=[x for x in range(100)] printnum() 我只能说一句话markdown太厉害了，牛！ 多级列表的产生 注意需要在序号的后面需要加上一个空格才会产生列表的效果 产生多级的效果需要在指定的上一级标签后回车，加tab键产生效果 无序列表的操作 一个横线加上一个空格就可以生成 同样是支持多级的无序列表的，与有序列表的操作是相同的 这样是加粗的操作，要用到两个星号 这样是斜体的操作，注意只需要用到一个星号 这样是既加粗有斜体的操作 插入表格的操作 表头 表头 表格内容 可以写的不整齐但是它是会自动把你变成一个封闭的表格的 插入图片需要注意相应的路径，可以使用插件past image 还是挺好用的！ 给指定文字超链接 例如这里我给百度这个文字超链接</summary></entry></feed>
