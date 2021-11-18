@@ -1,0 +1,136 @@
+I"u:<h2 id="关于类文件命名">关于类文件命名</h2>
+<p>  在java中规定类文件的名称必须跟文件中唯一的一个public类的类名一样，而在python中没有这个要求，保存python类的文件名与类名没有关系,但是文件名最好有具体的含义</p>
+<h2 id="关于python中类的格式">关于python中类的格式</h2>
+<ol>
+  <li>与其他语言类似，约定首字母大写的名称指的是类</li>
+  <li>
+    <p>同样具有构造函数，类变量，成员变量，类方法，成员方法</p>
+
+    <p><strong><em>如下图</em></strong></p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Student</span><span class="p">:</span>
+ <span class="s">"""学生类"""</span>
+ <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+ <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span><span class="p">):</span>
+     <span class="s">''''初始化方法'''</span>
+     <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+     <span class="bp">self</span><span class="p">.</span><span class="n">_age</span><span class="o">=</span><span class="n">age</span>
+ <span class="k">def</span> <span class="nf">getAge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">age</span>
+ <span class="o">@</span><span class="nb">classmethod</span>
+ <span class="k">def</span> <span class="nf">getNum</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+     <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">count</span>
+</code></pre></div>    </div>
+    <p><strong><em>同等效果的 java代码</em></strong></p>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">test</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Student</span> <span class="o">{</span>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span>  <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+ <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+ <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+ <span class="kd">public</span> <span class="nf">Student</span><span class="o">()</span> <span class="o">{</span>
+     <span class="c1">// TODO Auto-generated constructor stub</span>
+ <span class="o">}</span><span class="c1">//无参构造方法</span>
+ <span class="kd">public</span> <span class="nf">Student</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span>
+ <span class="o">{</span>
+     <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="n">name</span><span class="o">;</span>
+     <span class="k">this</span><span class="o">.</span><span class="na">age</span><span class="o">=</span><span class="n">age</span><span class="o">;</span>
+     <span class="n">count</span><span class="o">++;</span>
+ <span class="o">}</span>
+ <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span>
+ <span class="o">{</span>
+     <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">age</span><span class="o">;</span>
+ <span class="o">}</span>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">getNum</span><span class="o">()</span>
+ <span class="o">{</span>
+     <span class="k">return</span> <span class="n">count</span><span class="o">;</span>
+ <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+    <h2 id="关于指向该类的实例指针thisself以及父类的super">关于指向该类的实例指针this,self，以及父类的super</h2>
+    <p>  java中的this,表示指向该类的实例对象，python中的self表示的创建类的实例本身，super都是指向父类的实例对象</p>
+  </li>
+</ol>
+
+<h2 id="关于构造方法其他方法">关于构造方法，其他方法</h2>
+<p>  java中的构造函数分为（默认），有参（支持重载），构造函数名与类名一致</p>
+
+<p>  python的构造函数为<font color="red">__init__</font>,其中形参<font color="red">self</font>f必不可少，创建实例时不需要传入该参数，python解释器会自动传入，python类中的方法都需要<strong><em>显式带上self</em></strong>参数，通过对象调用时不用传入该参数</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Student</span><span class="p">:</span>
+    <span class="s">"""学生类"""</span>
+    <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span><span class="p">):</span>
+        <span class="s">''''构造方法'''</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_age</span><span class="o">=</span><span class="n">age</span>
+    <span class="k">def</span> <span class="nf">getAge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span class="c1">#self必不可少
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">age</span>
+	<span class="o">@</span><span class="nb">classmethod</span>
+	<span class="k">def</span> <span class="nf">getNum</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">count</span>
+</code></pre></div></div>
+<h2 id="关于实例变量类变量类方法">关于实例变量，类变量，类方法</h2>
+<p>  在java中定义在类中的变量如果不是static修饰的，指的是实例变量（每个对象都会保存一份该变量，可以直接通过类名来访问）下图:Student类中的count在python中属于类变量，属于整个类，所有实例对象共同拥有一个count变量，相当于java中的实例变量（static修饰）,而age,name等在函数里通过self定义的变量称之为实例变量（需要通过实例对象来访问）。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Student</span><span class="p">:</span>
+    <span class="s">"""学生类"""</span>
+    <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="c1">#类变量
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span><span class="p">):</span>
+        <span class="s">''''构造方法'''</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="c1">#实例变量
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">_age</span><span class="o">=</span><span class="n">age</span>
+    <span class="k">def</span> <span class="nf">getAge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span class="c1">#self必不可少
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">age</span>
+	<span class="o">@</span><span class="nb">classmethod</span>
+	<span class="k">def</span> <span class="nf">getNum</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">count</span>
+</code></pre></div></div>
+<p>  类方法:java中的类方法通过static修饰，可以通过类名直接访问,python中的类方法和实例方法相似，它最少也要包含一个参数<strong><em>cls</em></strong>，Python 会自动<strong><em>将类本身绑定给 cls 参数</em></strong>和实例方法最大的不同在于，类方法需要使用＠classmethod修饰符进行修饰,如上图的<strong><em>getNum()</em></strong> 方法</p>
+
+<p>  在根据类创建完成的对象仍可以通过对象名.属性名的情况下增加对于该实例变量的属性，如下例</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="o">=</span><span class="n">Student</span><span class="p">(</span><span class="s">'xiaoming'</span><span class="p">,</span><span class="s">'17'</span><span class="p">)</span>
+<span class="n">a</span><span class="p">.</span><span class="n">sex</span><span class="o">=</span><span class="s">'男'</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+</code></pre></div></div>
+<h2 id="关于对象的创建">关于对象的创建</h2>
+<p>  java可以通过<font color="red">new</font>关键字来实现对象的实例化
+python则通过类名来进行创建</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//java创建学生对象</span>
+
+  <span class="nc">Student</span> <span class="n">a</span><span class="o">=</span><span class="k">new</span> <span class="nc">Student</span><span class="o">(</span><span class="s">"xiaoming"</span><span class="o">,</span><span class="mi">17</span><span class="o">);</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#python创建学生对象
+</span>
+   <span class="n">a</span><span class="o">=</span><span class="n">Student</span><span class="p">(</span><span class="s">'xiaoming'</span><span class="p">,</span><span class="s">'17'</span><span class="p">)</span>
+</code></pre></div></div>
+<h2 id="关于访问权限修饰符">关于访问权限修饰符</h2>
+<p>java中有default,private,protected,public访问修饰符来控制类中属性的访问
+python默认情况下类的所有成员变量都是public，如果需要，可以通过变量名前添加单个前缀_实现protected的效果，通过添加两个前缀__实现private效果，例如上面python student类的age属性</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//java访问修饰权限</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span>  <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#python访问修饰权限
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_age</span><span class="o">=</span><span class="n">age</span>
+</code></pre></div></div>
+<p>ps:对于python中”private”修饰的变量你仍然可以同过对象名._类名__属性名的方式进行访问操作</p>
+
+<h2 id="关于属性方法的调用">关于属性，方法的调用</h2>
+<p>  java，python都可以通过实例对象.属性名(方法名)访问或者调用可见的方法</p>
+
+<h2 id="关于类继承">关于类继承</h2>
+<p>  python通过类名后的括号()来实现，java通过关键字extend来实现，python也支持多继承</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">gstudent</span><span class="p">(</span><span class="n">Student</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">age</span><span class="p">)</span>
+</code></pre></div></div>
+<h4 id="ps运行时会把该文件中所包含的类给事先加载到frame里去">ps:运行时，会把该文件中所包含的类给事先加载到frame里去</h4>
+<h2 id="参考博客">参考博客</h2>
+<p><a href="https://blog.csdn.net/CLHugh/article/details/75000104">Python中self用法详解</a></p>
+
+<p><a href="http://c.biancheng.net/view/4552.html#:~:text=Python%E7%B1%BB%E6%96%B9%E6%B3%95%20Python%20%E7%B1%BB%E6%96%B9%E6%B3%95%E5%92%8C%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E7%9B%B8%E4%BC%BC%EF%BC%8C%E5%AE%83%E6%9C%80%E5%B0%91%E4%B9%9F%E8%A6%81%E5%8C%85%E5%90%AB%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0%EF%BC%8C%E5%8F%AA%E4%B8%8D%E8%BF%87%E7%B1%BB%E6%96%B9%E6%B3%95%E4%B8%AD%E9%80%9A%E5%B8%B8%E5%B0%86%E5%85%B6%E5%91%BD%E5%90%8D%E4%B8%BA,cls%EF%BC%8CPython%20%E4%BC%9A%E8%87%AA%E5%8A%A8%E5%B0%86%E7%B1%BB%E6%9C%AC%E8%BA%AB%E7%BB%91%E5%AE%9A%E7%BB%99%20cls%20%E5%8F%82%E6%95%B0%EF%BC%88%E6%B3%A8%E6%84%8F%EF%BC%8C%E7%BB%91%E5%AE%9A%E7%9A%84%E4%B8%8D%E6%98%AF%E7%B1%BB%E5%AF%B9%E8%B1%A1%EF%BC%89%E3%80%82">Python实例方法、静态方法和类方法详解（包含区别和用法)</a></p>
+
+<p>[3] https://www.jianshu.com/p/7b8bf60def7e</p>
+
+<p>[4] https://blog.csdn.net/qq_37584164/article/details/102645924</p>
+:ET
