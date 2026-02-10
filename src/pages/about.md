@@ -9,7 +9,6 @@ title: "关于"
 - 记实践，也记感受；
 - 让零散的灵感，慢慢长成可回望的路径。
 
-![Astro Paper](public/astropaper-og.jpg)
 
 我希望这片页面有三分古意、七分清朗：
 
