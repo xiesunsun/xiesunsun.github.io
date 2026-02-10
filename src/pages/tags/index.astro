@@ -15,7 +15,7 @@ let tags = getUniqueTags(posts);
 
 <Layout title={`标签 | ${SITE.title}`}>
   <Header />
-  <Main pageTitle="标签" pageDesc="所有文章中出现过的主题标签。">
+  <Main pageTitle="标签" pageDesc="以词为舟，循标签可溯每一段文字的来路。">
     <ul class="flex flex-wrap gap-6">
       {tags.map(({ tag, tagName }) => <Tag {tag} {tagName} />)}
     </ul>

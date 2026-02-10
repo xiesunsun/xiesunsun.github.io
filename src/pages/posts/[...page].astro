@@ -20,7 +20,7 @@ const { page } = Astro.props;
 
 <Layout title={`文章 | ${SITE.title}`}>
   <Header />
-  <Main pageTitle="文章" pageDesc="这里收录了我写下的所有文章。">
+  <Main pageTitle="文章" pageDesc="纸上有山海，笔下存晨昏。此间尽是我写下的篇章。">
     <ul>
       {page.data.map(data => <Card {...data} />)}
     </ul>
