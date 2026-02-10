@@ -21,17 +21,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 关键：先装 Node，但不要开启 cache: pnpm（否则它会先找 pnpm）
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+      # 关键：用 Corepack 激活 pnpm（Node 20 自带 corepack）
+      - name: Enable pnpm (Corepack)
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.1 --activate
+          pnpm --version
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
