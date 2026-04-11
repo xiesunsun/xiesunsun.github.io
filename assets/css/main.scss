@@ -38,10 +38,18 @@
 
 // 站点标题与页脚的柔和定制
 .masthead .site-title {
-    @include font-en;
-    font-style: italic;
-    letter-spacing: 0.08em;
+    font-family: "Snell Roundhand", "Apple Chancery", "Zapfino", "URW Chancery L", cursive;
+    font-size: 1.85rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
     text-transform: lowercase;
+    color: $morandi-primary-dark;
+
+    &:hover {
+        color: $morandi-primary;
+    }
 }
 
 .page__footer {
