@@ -255,3 +255,175 @@
         background-color: $morandi-bg-secondary;
     }
 }
+
+// About 页面定制
+.about-card-page {
+    max-width: 860px;
+    margin: 2.5rem auto 4.5rem;
+    padding: 0 1rem;
+}
+
+.about-hero {
+    position: relative;
+    padding: 2.5rem 2rem 2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba($morandi-border, 0.9);
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at top left, rgba($morandi-primary-light, 0.24), transparent 34%),
+        linear-gradient(180deg, rgba($morandi-white, 0.92) 0%, rgba($morandi-bg-secondary, 0.88) 100%);
+    box-shadow: 0 18px 45px rgba($morandi-primary-dark, 0.08);
+}
+
+.about-hero__eyebrow {
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $morandi-text-secondary;
+}
+
+.about-hero__name {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: clamp(3rem, 10vw, 5.4rem);
+    line-height: 0.95;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: $morandi-primary-dark;
+    font-family: "Snell Roundhand", "Apple Chancery", "Zapfino", "URW Chancery L", cursive;
+}
+
+.about-hero__role {
+    margin: 1rem 0 0;
+    font-size: 1.08rem;
+    letter-spacing: 0.08em;
+    color: $morandi-text-primary;
+}
+
+.about-hero__location {
+    margin: 0.45rem 0 0;
+    color: $morandi-text-secondary;
+    font-size: 0.98rem;
+}
+
+.about-hero__quote {
+    margin: 1.35rem 0 0;
+    max-width: 32rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: $morandi-primary;
+}
+
+.about-panel {
+    margin-top: 1.4rem;
+    padding: 1.5rem;
+    border: 1px solid rgba($morandi-border, 0.9);
+    border-radius: 22px;
+    background: rgba($morandi-white, 0.74);
+    box-shadow: 0 10px 24px rgba($morandi-primary-dark, 0.04);
+}
+
+.about-section-title {
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $morandi-primary;
+}
+
+.about-intro p {
+    margin: 0;
+    color: $morandi-text-primary;
+    line-height: 1.95;
+}
+
+.about-intro p + p {
+    margin-top: 0.85rem;
+}
+
+.about-focus__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.about-focus__card {
+    min-height: 132px;
+    padding: 1.15rem 1.15rem 1rem;
+    border: 1px solid rgba($morandi-border, 0.95);
+    border-radius: 18px;
+    background:
+        linear-gradient(180deg, rgba($morandi-bg-light, 0.95) 0%, rgba($morandi-bg-secondary, 0.86) 100%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 24px rgba($morandi-primary-dark, 0.07);
+        border-color: rgba($morandi-primary, 0.42);
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        line-height: 1.45;
+        color: $morandi-text-primary;
+    }
+}
+
+.about-focus__label {
+    margin: 0 0 0.8rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $morandi-text-secondary;
+}
+
+.about-links__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 132px;
+    padding: 0.82rem 1.3rem;
+    border: 1px solid rgba($morandi-primary, 0.28);
+    border-radius: 999px;
+    background: rgba($morandi-bg-secondary, 0.72);
+    color: $morandi-primary-dark;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+        text-decoration: none;
+        transform: translateY(-1px);
+        background: rgba($morandi-primary-light, 0.24);
+        box-shadow: 0 10px 22px rgba($morandi-primary-dark, 0.06);
+    }
+}
+
+@media (max-width: 768px) {
+    .about-card-page {
+        margin-top: 1.5rem;
+        padding: 0 0.65rem;
+    }
+
+    .about-hero {
+        padding: 1.8rem 1.25rem 1.45rem;
+        border-radius: 22px;
+    }
+
+    .about-panel {
+        padding: 1.2rem;
+        border-radius: 18px;
+    }
+
+    .about-focus__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-focus__card {
+        min-height: auto;
+    }
+}
