@@ -1,6 +1,6 @@
 ---
-title: "Posts by Year"
+title: "文章归档"
 permalink: /posts/
 layout: posts
-author_profile: true
+author_profile: false
 ---

@@ -1,0 +1,483 @@
+// ========================================
+// 莫兰迪风格主题 - 样式应用
+// ========================================
+
+@import "variables-morandi";
+@import "fonts-morandi";
+
+// ========================================
+// 全局样式
+// ========================================
+
+html {
+  font-size: $base-font-size;
+}
+
+body {
+  @include font-cn;
+  @include font-smoothing;
+  background-color: $morandi-bg-light;
+  color: $morandi-text-primary;
+  line-height: $base-line-height;
+  font-weight: 400;
+  letter-spacing: 0.003em;
+}
+
+// ========================================
+// 标题样式
+// ========================================
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @include font-cn;
+  color: $morandi-text-primary;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+  margin-top: 0.75em;
+
+  a {
+    color: $morandi-primary;
+    text-decoration: none;
+
+    &:hover {
+      color: $morandi-link-hover;
+    }
+  }
+}
+
+h1 {
+  font-size: $h1-size;
+  border-bottom: 2px solid $morandi-border;
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: $h2-size;
+  color: $morandi-primary;
+}
+
+h3 {
+  font-size: $h3-size;
+}
+
+h4 {
+  font-size: $h4-size;
+}
+
+// ========================================
+// 文本和段落
+// ========================================
+
+p {
+  @include font-cn;
+  margin-bottom: 1.1em;
+  text-align: start;
+}
+
+a {
+  color: #a55331;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $morandi-link-hover;
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: #8f5238;
+  }
+}
+
+// ========================================
+// 代码块样式
+// ========================================
+
+code {
+  @include font-mono;
+  background-color: $morandi-code-bg;
+  color: $morandi-text-primary;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  border: 1px solid $morandi-code-border;
+}
+
+pre {
+  @include font-mono;
+  background-color: #f1e6da;
+  border: 1px solid #d7c2ae;
+  border-radius: 4px;
+  padding: 1em;
+  overflow-x: auto;
+  line-height: 1.75;
+  font-size: 0.95em;
+
+  code {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    color: $morandi-text-primary;
+  }
+}
+
+// 正文排版可读性优化
+.page__content {
+  color: #372e29;
+  font-size: 1.06rem;
+  line-height: 1.9;
+  max-width: 72ch;
+
+  p,
+  li {
+    text-align: start;
+    word-break: break-word;
+  }
+
+  h1,
+  h2,
+  h3 {
+    line-height: 1.35;
+    margin-top: 1.1em;
+  }
+
+  :not(pre)>code {
+    background-color: #ecdccc;
+    border-color: #cfb9a2;
+  }
+}
+
+// 代码高亮三档对比方案（默认 strong，优先可读性）
+:root {
+  // strong (default)
+  --code-fg: #2f2a26;
+  --code-comment: #645d58;
+  --code-keyword: #5b22a0;
+  --code-string: #1f6e2c;
+  --code-number: #a3461a;
+  --code-name: #0d4f86;
+  --code-func: #004f63;
+  --code-operator: #4d433c;
+  --code-error: #a33939;
+}
+
+body.code-theme-balanced {
+  --code-comment: #756d66;
+  --code-keyword: #6b35aa;
+  --code-string: #2f7a3d;
+  --code-number: #b35a29;
+  --code-name: #1c5f90;
+  --code-func: #0f5f72;
+}
+
+body.code-theme-soft {
+  --code-comment: #8a837c;
+  --code-keyword: #7d4cb8;
+  --code-string: #3f7f47;
+  --code-number: #ad5c2f;
+  --code-name: #2a6795;
+  --code-func: #1a687b;
+}
+
+body.code-theme-strong {
+  // Keep explicit class as alias for readability-first default.
+}
+
+div.highlighter-rouge,
+figure.highlight {
+  background: #f1e6da;
+  color: var(--code-fg);
+  border: 1px solid #d7c2ae;
+}
+
+.page__content .highlight {
+
+  .n,
+  .nl,
+  .nn,
+  .nb {
+    color: var(--code-fg) !important;
+  }
+
+  .c,
+  .cm,
+  .c1,
+  .cs {
+    color: var(--code-comment) !important;
+    font-style: italic;
+  }
+
+  .k,
+  .kc,
+  .kd,
+  .kn,
+  .kp,
+  .kr,
+  .nt {
+    color: var(--code-keyword) !important;
+    font-weight: 600;
+  }
+
+  .s,
+  .s1,
+  .s2,
+  .sb,
+  .sc,
+  .sd,
+  .se,
+  .sh,
+  .si,
+  .sx {
+    color: var(--code-string) !important;
+  }
+
+  .m,
+  .mf,
+  .mh,
+  .mi,
+  .il,
+  .mo {
+    color: var(--code-number) !important;
+  }
+
+  .na,
+  .nc,
+  .nv,
+  .nx {
+    color: var(--code-name) !important;
+  }
+
+  .nf {
+    color: var(--code-func) !important;
+    font-weight: 600;
+  }
+
+  .o,
+  .ow,
+  .p,
+  .w {
+    color: var(--code-operator) !important;
+  }
+
+  .err {
+    color: var(--code-error) !important;
+    background: rgba(163, 57, 57, 0.08);
+  }
+}
+
+// ========================================
+// 块元素
+// ========================================
+
+blockquote {
+  border-left: 4px solid $morandi-primary;
+  padding-left: 1em;
+  margin-left: 0;
+  color: $morandi-text-secondary;
+  font-style: italic;
+  background-color: rgba($morandi-primary, 0.05);
+  padding: 0.5em 1em;
+  border-radius: 4px;
+}
+
+.notice {
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  border-left: 4px solid $morandi-primary;
+  background-color: rgba($morandi-primary, 0.08);
+
+  &--info {
+    border-left-color: $morandi-info;
+    background-color: rgba($morandi-info, 0.08);
+  }
+
+  &--warning {
+    border-left-color: $morandi-warning;
+    background-color: rgba($morandi-warning, 0.08);
+  }
+
+  &--danger {
+    border-left-color: $morandi-danger;
+    background-color: rgba($morandi-danger, 0.08);
+  }
+
+  &--success {
+    border-left-color: $morandi-success;
+    background-color: rgba($morandi-success, 0.08);
+  }
+}
+
+// ========================================
+// 列表和目录
+// ========================================
+
+ul,
+ol {
+  @include font-cn;
+  margin-bottom: 1em;
+
+  li {
+    margin-bottom: 0.5em;
+  }
+}
+
+dt {
+  font-weight: 600;
+  color: $morandi-primary;
+}
+
+dd {
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+// ========================================
+// 表格样式
+// ========================================
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1.5em;
+  font-size: 0.9em;
+
+  thead {
+    background-color: $morandi-bg-secondary;
+
+    th {
+      color: $morandi-primary;
+      font-weight: 600;
+      padding: 0.75em;
+      text-align: left;
+      border-bottom: 2px solid $morandi-border;
+    }
+  }
+
+  tbody tr {
+    &:hover {
+      background-color: rgba($morandi-primary, 0.05);
+    }
+
+    td {
+      padding: 0.75em;
+      border-bottom: 1px solid $morandi-border;
+    }
+  }
+}
+
+// ========================================
+// 辅助元素
+// ========================================
+
+hr {
+  border: none;
+  border-top: 2px solid $morandi-border;
+  margin: 2em 0;
+  opacity: 0.5;
+}
+
+strong,
+b {
+  font-weight: 600;
+  color: $morandi-primary;
+}
+
+em,
+i {
+  font-style: italic;
+  color: $morandi-text-secondary;
+}
+
+small {
+  font-size: 0.85em;
+  color: $morandi-text-secondary;
+}
+
+mark {
+  background-color: rgba($morandi-warning, 0.2);
+  padding: 0.2em 0.4em;
+  border-radius: 2px;
+}
+
+// ========================================
+// 按钮和交互元素
+// ========================================
+
+button,
+input[type="button"],
+input[type="submit"] {
+  background-color: $morandi-primary;
+  color: $morandi-white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+
+  &:hover {
+    background-color: $morandi-primary-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($morandi-primary, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ========================================
+// 分页和导航
+// ========================================
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  gap: 0.5em;
+
+  a,
+  span {
+    padding: 0.5em 0.75em;
+    border-radius: 4px;
+    border: 1px solid $morandi-border;
+    transition: all 0.3s ease;
+
+    &.page-number {
+      &:not(.current):hover {
+        background-color: $morandi-bg-secondary;
+        color: $morandi-primary;
+      }
+    }
+
+    &.current {
+      background-color: $morandi-primary;
+      color: $morandi-white;
+      border-color: $morandi-primary;
+      font-weight: 600;
+    }
+  }
+}
+
+// ========================================
+// 响应式 - 媒体查询
+// ========================================
+
+@media (prefers-color-scheme: dark) {
+
+  // 暗色模式也遵循莫兰迪风格
+  body {
+    background-color: #2a2a26;
+    color: #d0ccc7;
+  }
+
+  code {
+    background-color: #3a3632;
+    color: #d0ccc7;
+  }
+}

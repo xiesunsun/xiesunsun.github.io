@@ -1,27 +1,45 @@
-# Minimal Mistakes remote theme starter
+# Sun Xie Blog
 
-Click [**Use this template**](https://github.com/mmistakes/mm-github-pages-starter/generate) button above for the quickest method of getting started with the [Minimal Mistakes Jekyll theme](https://github.com/mmistakes/minimal-mistakes).
+This repository contains the Jekyll source for the blog published at [blog.sunxie.me](https://blog.sunxie.me).
 
-Contains basic configuration to get you a site with:
+## Local development
 
-- Sample posts.
-- Sample top navigation.
-- Sample author sidebar with social links.
-- Sample footer links.
-- Paginated home page.
-- Archive pages for posts grouped by year, category, and tag.
-- Sample about page.
-- Sample 404 page.
-- Site wide search.
+Install dependencies:
 
-Replace sample content with your own and [configure as necessary](https://mmistakes.github.io/minimal-mistakes/docs/configuration/).
+```bash
+bundle install
+```
 
----
+Start a local server:
 
-## Troubleshooting
+```bash
+bundle exec jekyll serve
+```
 
-If you have a question about using Jekyll, start a discussion on the [Jekyll Forum](https://talk.jekyllrb.com/) or [StackOverflow](https://stackoverflow.com/questions/tagged/jekyll). Other resources:
+Build the static site:
 
-- [Ruby 101](https://jekyllrb.com/docs/ruby-101/)
-- [Setting up a Jekyll site with GitHub Pages](https://jekyllrb.com/docs/github-pages/)
-- [Configuring GitHub Metadata](https://github.com/jekyll/github-metadata/blob/master/docs/configuration.md#configuration) to work properly when developing locally and avoid `No GitHub API authentication could be found. Some fields may be missing or have incorrect data.` warnings.
+```bash
+bundle exec jekyll build
+```
+
+The generated site is written to `_site/`.
+
+## Deployment
+
+Deployment is handled by GitHub Pages through the workflow in `.github/workflows/deploy.yml`.
+
+The repository is expected to be hosted at:
+
+- Repository: `https://github.com/xiesunsun/xiesunsun.github.io`
+- Production URL: `https://blog.sunxie.me`
+
+For GitHub Pages custom domain setup:
+
+- Set the custom domain in the repository Pages settings to `blog.sunxie.me`
+- Point the Cloudflare DNS record `blog.sunxie.me` to `xiesunsun.github.io`
+- Prefer a `CNAME` record with `DNS only` during the initial cutover
+
+## Notes
+
+- `sunxie.me` is intentionally not used as the blog's production URL in this repository.
+- The old server-based deployment path has been retired in favor of GitHub Pages.

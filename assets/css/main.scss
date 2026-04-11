@@ -1,0 +1,257 @@
+---
+---
+@charset "utf-8";
+
+// ========================================
+// 导入莫兰迪主题和字体配置
+// ========================================
+
+@import "variables-morandi";
+@import "fonts-morandi";
+
+// ========================================
+// 导入 Minimal Mistakes 核心样式
+// ========================================
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
+@import "minimal-mistakes";
+
+// 在主题样式之后应用莫兰迪覆盖
+@import "morandi-theme";
+
+// ========================================
+// 额外自定义调整
+// ========================================
+
+// Minimal Mistakes 容器宽度调整（可选）
+.page-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1em;
+}
+
+// 文章容器优化
+.page__content {
+    @include font-cn;
+    @include font-smoothing;
+}
+
+// 站点标题与页脚的柔和定制
+.masthead .site-title {
+    @include font-en;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+}
+
+.page__footer {
+    margin-top: 3rem;
+    padding-top: 0;
+    background: linear-gradient(180deg, rgba($morandi-bg-light, 0.65) 0%, rgba($morandi-bg-secondary, 0.92) 100%);
+    border-top: 1px solid rgba($morandi-border, 0.85);
+    backdrop-filter: blur(6px);
+    @include font-cn;
+
+    footer {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 1.75rem 1rem 1.25rem;
+    }
+
+    .footer-verse {
+        text-align: center;
+        color: $morandi-text-secondary;
+        margin-bottom: 1rem;
+
+        &__line {
+            margin: 0;
+            font-family: "STKaiti", "Kaiti SC", "KaiTi", "Songti SC", serif;
+            font-style: normal;
+            font-size: 1.02rem;
+            letter-spacing: 0.04em;
+            color: $morandi-primary;
+        }
+
+        &__meta {
+            margin: 0.4rem 0 0;
+            font-size: 0.92rem;
+        }
+    }
+
+    .footer-minimal {
+        text-align: center;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &__line {
+            margin: 0;
+            font-family: "STKaiti", "Kaiti SC", "KaiTi", "Songti SC", serif;
+            font-size: 1.06rem;
+            letter-spacing: 0.04em;
+            color: $morandi-text-primary;
+            text-align: center;
+        }
+
+        &__copy {
+            margin: 0.75rem 0 0;
+            font-size: 0.92rem;
+            color: $morandi-text-secondary;
+            text-align: center;
+        }
+    }
+
+    .page__footer-follow {
+        display: none;
+        padding-top: 0.4rem;
+        margin-top: 0;
+
+        .social-icons {
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            font-size: 0.92rem;
+
+            li {
+                margin: 0;
+            }
+
+            a {
+                border-bottom: 1px solid transparent;
+                transition: color 0.2s ease, border-color 0.2s ease;
+
+                &:hover {
+                    border-bottom-color: currentColor;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    .page__footer-copyright {
+        display: none;
+        text-align: center;
+        color: $morandi-text-secondary;
+        font-size: 0.88rem;
+        letter-spacing: 0.02em;
+
+        a {
+            color: $morandi-primary;
+        }
+    }
+}
+
+// 侧边栏样式
+.sidebar {
+    background-color: $morandi-bg-secondary;
+    border: 1px solid $morandi-border;
+    border-radius: 4px;
+    padding: 1.5em;
+
+    h3 {
+        color: $morandi-primary;
+        border-bottom: 2px solid $morandi-border;
+        padding-bottom: 0.5em;
+    }
+}
+
+// 标签和分类样式
+.page__taxonomy {
+    margin-bottom: 2em;
+
+    .page__taxonomy-item {
+        display: inline-block;
+        margin: 0.25em 0.5em 0.25em 0;
+        padding: 0.35em 0.75em;
+        background-color: $morandi-bg-secondary;
+        border: 1px solid $morandi-border;
+        border-radius: 20px;
+        color: $morandi-primary;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: $morandi-primary;
+            color: $morandi-white;
+            border-color: $morandi-primary;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+}
+
+// 归档页面样式
+.archive__item {
+    margin-bottom: 1.5em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid $morandi-border;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .archive__item-title {
+        color: $morandi-primary;
+        font-weight: 600;
+
+        a {
+            color: $morandi-primary;
+            text-decoration: none;
+
+            &:hover {
+                color: $morandi-link-hover;
+            }
+        }
+    }
+
+    .archive__item-excerpt {
+        color: $morandi-text-secondary;
+        margin-top: 0.5em;
+    }
+}
+
+// 搜索框样式
+.search-input {
+    background-color: $morandi-bg-secondary;
+    border: 1px solid $morandi-border;
+    color: $morandi-text-primary;
+    padding: 0.5em 0.75em;
+    border-radius: 4px;
+
+    &::placeholder {
+        color: $morandi-text-secondary;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $morandi-primary;
+        box-shadow: 0 0 0 3px rgba($morandi-primary, 0.1);
+    }
+}
+
+// 评论区域
+.comments {
+    margin-top: 3em;
+    padding-top: 2em;
+    border-top: 2px solid $morandi-border;
+}
+
+// 打印样式
+@media print {
+    body {
+        background-color: white;
+        color: $morandi-text-primary;
+    }
+
+    a {
+        color: $morandi-link;
+    }
+
+    code {
+        background-color: $morandi-bg-secondary;
+    }
+}

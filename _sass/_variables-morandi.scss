@@ -1,0 +1,58 @@
+// ========================================
+// 莫兰迪风格色彩变量
+// ========================================
+
+// 基础中性色系（暖调）
+$morandi-white: #fdfaf6; // 奶油白
+$morandi-bg-light: #f6efe7; // 杏仁米色背景
+$morandi-bg-secondary: #efe3d6; // 次级背景色
+$morandi-text-primary: #4f433c; // 暖深棕灰文字
+$morandi-text-secondary: #827268; // 次级文字
+$morandi-border: #dbcbbb; // 边框色
+
+// 主题强调色 - 温暖莫兰迪
+$morandi-primary: #9f7a5a; // 焦糖棕（主色调）
+$morandi-primary-dark: #805e42; // 深焦糖棕
+$morandi-primary-light: #c5a58b; // 浅焦糖棕
+
+$morandi-secondary: #b89176; // 肉桂棕（次级色）
+$morandi-accent: #c1826d; // 柔和陶土（辅助色）
+
+// 链接和交互（去灰蓝，改暖色）
+$morandi-link: #b25f3f; // 焦糖橘链接色
+$morandi-link-hover: #8c452c; // 悬停色
+
+// 状态色（暖调）
+$morandi-success: #8f9b73; // 柔和橄榄绿 (success)
+$morandi-info: #b48a70; // 暖棕米 (info)
+$morandi-warning: #c79a5f; // 琥珀棕 (warning)
+$morandi-danger: #b06d62; // 陶土红 (danger)
+
+// 代码块背景
+$morandi-code-bg: #f7eee5; // 代码块背景
+$morandi-code-border: #e4d2c1; // 代码块边框
+
+// ========================================
+// 应用到 Minimal Mistakes 变量
+// ========================================
+
+// 覆盖默认颜色变量（Minimal Mistakes）
+$background-color: $morandi-bg-light !default;
+$text-color: $morandi-text-primary !default;
+$muted-text-color: $morandi-text-secondary !default;
+$border-color: $morandi-border !default;
+
+$primary-color: $morandi-primary !default;
+$success-color: $morandi-success !default;
+$warning-color: $morandi-warning !default;
+$danger-color: $morandi-danger !default;
+$info-color: $morandi-info !default;
+
+// 链接颜色
+$link-color: $morandi-link !default;
+$link-color-hover: $morandi-link-hover !default;
+$link-color-visited: #9e5a40 !default;
+
+// 代码块配置
+$code-background-color: $morandi-code-bg !default;
+$code-background-color-dark: #eadbce !default;
