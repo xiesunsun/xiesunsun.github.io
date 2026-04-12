@@ -165,6 +165,92 @@
     }
 }
 
+.sidebar__right {
+    .toc {
+        border: 1px solid rgba($morandi-border, 0.9);
+        border-radius: 16px;
+        background: rgba($morandi-white, 0.68);
+        padding: 0.9rem 0.9rem 0.95rem;
+        box-shadow: 0 10px 24px rgba($morandi-primary-dark, 0.04);
+    }
+
+    .nav__title {
+        margin: 0 0 0.65rem;
+        padding: 0 0 0.55rem;
+        border-bottom: 1px solid rgba($morandi-border, 0.85);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: $morandi-primary-dark;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .toc__menu {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style: none;
+            margin: 0;
+        }
+
+        a {
+            position: relative;
+            display: block;
+            padding: 0.34rem 0 0.34rem 0.8rem;
+            color: $morandi-text-secondary;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            text-decoration: none;
+            transition: color 0.18s ease;
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.48rem;
+                bottom: 0.48rem;
+                width: 1.5px;
+                border-radius: 999px;
+                background: transparent;
+                transition: background-color 0.18s ease;
+            }
+
+            &:hover {
+                color: $morandi-primary;
+            }
+        }
+
+        ul {
+            margin: 0.1rem 0 0.2rem;
+            padding-left: 0.8rem;
+
+            a {
+                font-size: 0.86rem;
+                color: rgba($morandi-text-secondary, 0.92);
+            }
+        }
+
+        > li.active > a,
+        li.active > a {
+            color: $morandi-primary-dark;
+            font-weight: 600;
+
+            &::before {
+                background: rgba($morandi-primary, 0.95);
+            }
+        }
+
+        > li.active > ul > li > a {
+            color: $morandi-text-primary;
+        }
+
+        > li.active > ul > li.active > a {
+            color: $morandi-primary-dark;
+        }
+    }
+}
+
 // 标签和分类样式
 .page__taxonomy {
     margin-bottom: 2em;
