@@ -1,0 +1,46 @@
+# sunxie blog
+
+This is the personal technical blog of sunxie.
+
+Primary language: zh-CN
+Site URL: https://blog.sunxie.me
+
+## Focus
+
+- AI agents
+- coding workflows
+- context engineering
+- harness engineering
+- technical essays and research notes
+
+## Start Here
+
+- Home: https://blog.sunxie.me/
+- Post archive: https://blog.sunxie.me/posts/
+- Categories: https://blog.sunxie.me/categories/
+- Tags: https://blog.sunxie.me/tags/
+- Website skill: https://blog.sunxie.me/skills/sunxie-blog/SKILL.md
+
+## How To Use This Site
+
+- Use the post archive to browse by time.
+- Use categories for broad buckets.
+- Use tags for topic-level navigation.
+- Prefer canonical article URLs when citing the site's content.
+- Preserve the article title, author, and publication date when possible.
+
+## Citation Guidance
+
+- Summarize the author's position accurately and avoid adding claims not stated in the article.
+- When possible, cite the original article URL instead of archive pages.
+- If a post has tags related to AI agents or engineering workflow, use those tags to infer topic scope before citing.
+
+## Representative Posts
+
+- Humans steer. Agents execute.: https://blog.sunxie.me/essays/2026/04/12/humans-steer-agents-execute.html
+
+## Agent Submission
+
+Agents should use the public website skill for submission rules:
+
+- https://blog.sunxie.me/skills/sunxie-blog/SKILL.md

@@ -2,6 +2,10 @@
 layout: default
 ---
 {%- assign locale = page.locale | default: layout.locale | default: site.locale %}
+{%- assign schema_type = "https://schema.org/CreativeWork" -%}
+{%- if page.collection == "posts" -%}
+  {%- assign schema_type = "https://schema.org/BlogPosting" -%}
+{%- endif -%}
 
 {% if page.header.overlay_color or page.header.overlay_image or page.header.image %}
   {% include page__hero.html locale=locale %}
@@ -22,11 +26,37 @@ layout: default
 <div id="main" role="main">
   {% include sidebar.html locale=locale %}
 
-  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork"{% if page.locale %} lang="{{ page.locale }}"{% endif %}>
+  <article class="page h-entry" itemscope itemtype="{{ schema_type }}"{% if page.locale %} lang="{{ page.locale }}"{% endif %}>
     {% if page.title %}<meta itemprop="headline" content="{{ page.title | replace: '|', '&#124;' | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
     {% if page.excerpt %}<meta itemprop="description" content="{{ page.excerpt | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
     {% if page.date %}<meta itemprop="datePublished" content="{{ page.date | date_to_xmlschema }}">{% endif %}
     {% if page.last_modified_at %}<meta itemprop="dateModified" content="{{ page.last_modified_at | date_to_xmlschema }}">{% endif %}
+    {% if page.tags %}<meta itemprop="keywords" content="{{ page.tags | join: ', ' | escape_once }}">{% endif %}
+    {% if page.collection == "posts" %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": {{ page.title | markdownify | strip_html | strip_newlines | jsonify }},
+          "description": {{ page.excerpt | default: site.description | markdownify | strip_html | strip_newlines | jsonify }},
+          "url": {{ page.url | absolute_url | jsonify }},
+          "mainEntityOfPage": {{ page.url | absolute_url | jsonify }},
+          "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+          "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }},
+          "inLanguage": {{ locale | jsonify }},
+          "author": {
+            "@type": "Person",
+            "name": {{ site.author.name | default: site.title | jsonify }}
+          },
+          "publisher": {
+            "@type": "Person",
+            "name": {{ site.author.name | default: site.title | jsonify }}
+          }{% if page.categories %},
+          "articleSection": {{ page.categories | first | jsonify }}{% endif %}{% if page.tags %},
+          "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
+        }
+      </script>
+    {% endif %}
 
     <div class="page__inner-wrap">
       {% unless page.header.overlay_color or page.header.overlay_image %}
@@ -42,7 +72,17 @@ layout: default
 
       <section class="page__content e-content" itemprop="text">
         {% if page.toc %}
-          <aside class="sidebar__right {% if page.toc_sticky %}sticky{% endif %}">
+          <div class="page__toc-mobile">
+            <details class="page__toc-mobile-panel">
+              <summary class="page__toc-mobile-summary">
+                <span class="page__toc-mobile-label">{{ site.data.ui-text[locale].toc_label | default: "On this page" }}</span>
+              </summary>
+              <nav class="toc toc--mobile" aria-label="Table of contents">
+                {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
+              </nav>
+            </details>
+          </div>
+          <aside class="sidebar__right page__toc-desktop {% if page.toc_sticky %}sticky{% endif %}">
             <nav class="toc" aria-label="Table of contents">
               <header><h4 class="nav__title">{{ page.toc_label | default: page.title | default: site.data.ui-text[locale].toc_label | default: "On this page" }}</h4></header>
               {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "sunxie-blog",
+      "type": "skill-md",
+      "description": "Use when working with blog.sunxie.me content: discovering posts, understanding tags and archives, citing essays correctly, or preparing an AI-generated blog post draft that must be submitted by email in the site's required Markdown format.",
+      "url": "https://blog.sunxie.me/skills/sunxie-blog/SKILL.md"
+    }
+  ]
+}

@@ -12,6 +12,7 @@ timezone: "Asia/Shanghai"
 # 让Jekyll处理 _pages 下的归档页与固定页面
 include:
   - _pages
+  - .well-known
 
 # ========================================
 # 莫兰迪风格主题配置

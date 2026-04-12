@@ -1,5 +1,9 @@
 {% assign locale = include.locale | default: site.locale %}
-{% assign stylesheet_version = site.time | date: '%Y%m%d%H%M%S' %}
+{% if site.github.build_revision %}
+  {% assign stylesheet_version = site.github.build_revision %}
+{% else %}
+  {% assign stylesheet_version = site.time | date: '%Y%m%d%H%M%S' %}
+{% endif %}
 <meta charset="utf-8">
 
 {% include seo.html locale=locale %}
@@ -7,8 +11,10 @@
 {% unless site.atom_feed.hide %}
   <link href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ site.title }} Feed">
 {% endunless %}
+<link rel="alternate" type="text/plain" href="{{ '/llms.txt' | absolute_url }}" title="LLMs overview">
+<link rel="alternate" type="application/json" href="{{ '/.well-known/skills/index.json' | absolute_url }}" title="Agent skills">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <script>
   document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
