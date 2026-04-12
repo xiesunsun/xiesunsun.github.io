@@ -5,10 +5,7 @@ date: 2026-04-12 00:10:00 +0800
 categories:
   - Essays
 tags:
-  - AI Agent
-  - Codex
-  - Claude Code
-  - Harness Engineering
+  - Agent
 ---
 
 **Humans steer. Agents execute.**
