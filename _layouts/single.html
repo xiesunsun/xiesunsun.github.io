@@ -86,3 +86,30 @@ layout: default
     {% include page__related.html locale=locale posts=site.posts %}
   {% endif %}
 </div>
+
+{% if page.collection == "posts" %}
+  <button class="back-to-top" type="button" aria-label="回到顶部" title="回到顶部">
+    <span aria-hidden="true">↑</span>
+  </button>
+  <script>
+    (function () {
+      var button = document.querySelector(".back-to-top");
+      if (!button) return;
+
+      var toggleButton = function () {
+        if (window.scrollY > 520) {
+          button.classList.add("is-visible");
+        } else {
+          button.classList.remove("is-visible");
+        }
+      };
+
+      button.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      window.addEventListener("scroll", toggleButton, { passive: true });
+      toggleButton();
+    })();
+  </script>
+{% endif %}
