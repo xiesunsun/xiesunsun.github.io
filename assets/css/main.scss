@@ -308,6 +308,17 @@
     }
 }
 
+.archive-page {
+    .page__title,
+    .page__title a {
+        color: $morandi-primary-dark;
+    }
+
+    .page__title a:hover {
+        color: $morandi-primary;
+    }
+}
+
 // 标签和分类样式
 .page__taxonomy {
     margin-bottom: 2em;

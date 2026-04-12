@@ -3,4 +3,5 @@ title: "分类归档"
 layout: categories
 permalink: /categories/
 author_profile: false
+classes: archive-page
 ---
