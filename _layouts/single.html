@@ -70,17 +70,25 @@ layout: default
         </header>
       {% endunless %}
 
+      {% if page.toc %}
+        <div class="page__toc-mobile">
+          <details class="page__toc-panel">
+            <summary class="page__toc-summary">
+              <span class="page__toc-label">{{ site.data.ui-text[locale].toc_label | default: "On this page" }}</span>
+            </summary>
+            <nav class="toc" aria-label="Table of contents">
+              {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
+            </nav>
+          </details>
+        </div>
+      {% endif %}
+
       <section class="page__content e-content" itemprop="text">
         {% if page.toc %}
-          <aside class="sidebar__right page__toc {% if page.toc_sticky %}sticky{% endif %}">
-            <details class="page__toc-panel">
-              <summary class="page__toc-summary">
-                <span class="page__toc-label">{{ site.data.ui-text[locale].toc_label | default: "On this page" }}</span>
-              </summary>
-              <nav class="toc" aria-label="Table of contents">
-                {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
-              </nav>
-            </details>
+          <aside class="sidebar__right page__toc-desktop {% if page.toc_sticky %}sticky{% endif %}">
+            <nav class="toc" aria-label="Table of contents">
+              {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
+            </nav>
           </aside>
         {% endif %}
         {{ content }}
