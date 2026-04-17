@@ -87,6 +87,9 @@ layout: default
         {% if page.toc %}
           <aside class="sidebar__right page__toc-desktop {% if page.toc_sticky %}sticky{% endif %}">
             <nav class="toc" aria-label="Table of contents">
+              <header>
+                <h4 class="nav__title">{{ page.toc_label | default: page.title | default: site.data.ui-text[locale].toc_label | default: "On this page" }}</h4>
+              </header>
               {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
             </nav>
           </aside>
