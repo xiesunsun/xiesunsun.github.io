@@ -1,7 +1,7 @@
 ---
 title: "OpenClaw 为什么会爆火"
 excerpt: "OpenClaw 真正带到大众面前的，不只是更强的模型，而是第一次以可感知、可传播、可复用的形式出现的 Token 生产力。"
-date: 2026-04-17 22:30:00 +0800
+date: 2026-04-17 22:00:00 +0800
 categories:
   - Essays
 tags:
