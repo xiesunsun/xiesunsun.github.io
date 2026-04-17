@@ -258,6 +258,72 @@
     }
 }
 
+.page__toc {
+    margin-bottom: 1.35rem;
+}
+
+.page__toc-panel {
+    display: block;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.page__toc-summary {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .page__toc {
+        margin-bottom: 1.35rem;
+    }
+
+    .page__toc-panel {
+        border: 1px solid rgba($morandi-border, 0.9);
+        border-radius: 18px;
+        background: rgba($morandi-white, 0.78);
+        box-shadow: 0 10px 24px rgba($morandi-primary-dark, 0.05);
+        overflow: hidden;
+    }
+
+    .page__toc-summary {
+        display: flex !important;
+    }
+}
+
+.page__toc-summary {
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0.85rem 1rem;
+    color: $morandi-primary-dark;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.96rem;
+    font-weight: 600;
+
+    &::-webkit-details-marker {
+        display: none;
+    }
+
+    &::after {
+        content: "展开";
+        color: $morandi-text-secondary;
+        font-size: 0.82rem;
+        font-weight: 500;
+    }
+}
+
+.page__toc-panel[open] .page__toc-summary {
+    border-bottom: 1px solid rgba($morandi-border, 0.8);
+
+    &::after {
+        content: "收起";
+    }
+}
+
 .back-to-top {
     position: fixed;
     right: max(1.6rem, calc((100vw - 1000px) / 2 + 4.6rem));
@@ -300,11 +366,51 @@
 }
 
 @media (max-width: 768px) {
+    .page__toc .toc {
+        padding: 0.55rem 1rem 0.9rem;
+    }
+
+    .page__toc-panel:not([open]) .toc {
+        display: none;
+    }
+
+    .page__content {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.82;
+    }
+
+    .page__title {
+        margin-bottom: 0.5rem;
+        line-height: 1.08;
+    }
+
+    .page__meta {
+        margin-bottom: 1rem;
+    }
+
     .back-to-top {
-        right: 1rem;
-        bottom: 1rem;
+        right: calc(1rem + env(safe-area-inset-right, 0px));
+        bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
         width: 2.5rem;
         height: 2.5rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .page__toc-panel[open] {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .page__toc-summary {
+        display: none !important;
+    }
+
+    .page__toc .toc {
+        display: block !important;
+        padding: 0;
     }
 }
 
@@ -514,6 +620,41 @@
     }
 }
 
+@media (max-width: 480px) {
+    .masthead__inner-wrap {
+        padding-inline: 0.75rem;
+    }
+
+    .greedy-nav a {
+        margin: 0 0.35rem;
+        min-height: 2.75rem;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.94rem;
+    }
+
+    .greedy-nav a.site-title {
+        margin-inline-start: 0;
+        margin-inline-end: 0.75rem;
+    }
+
+    .greedy-nav__toggle {
+        min-width: 2.75rem;
+        height: 2.75rem;
+        margin-inline-start: 0.35rem;
+    }
+
+    .greedy-nav .hidden-links {
+        min-width: 11rem;
+    }
+
+    .greedy-nav .hidden-links a {
+        min-height: 2.75rem;
+        display: flex;
+        align-items: center;
+    }
+}
+
 @media (max-width: 768px) {
     .about-card-page {
         margin-top: 1.75rem;
@@ -540,6 +681,34 @@
 
     .about-preface__body p {
         font-size: 1rem;
-        line-height: 1.92;
+        line-height: 1.84;
+        text-indent: 0;
+    }
+
+    .about-preface__epigraph {
+        margin-bottom: 1.4rem;
+    }
+
+    .about-preface__note {
+        margin-top: 1.8rem;
+        font-size: 0.92rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .masthead .site-title {
+        font-size: 1.65rem;
+    }
+
+    .greedy-nav a {
+        font-size: 0.9rem;
+    }
+
+    .about-card-page {
+        padding: 0 0.5rem;
+    }
+
+    .about-preface {
+        padding-left: 0.85rem;
     }
 }

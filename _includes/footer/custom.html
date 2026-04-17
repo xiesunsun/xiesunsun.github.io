@@ -1,0 +1,70 @@
+<script>
+  function initMobileNav() {
+    var nav = document.querySelector(".greedy-nav");
+    if (!nav) return;
+
+    var visibleLinks = nav.querySelector(".visible-links");
+    var hiddenLinks = nav.querySelector(".hidden-links");
+    var toggle = nav.querySelector(".greedy-nav__toggle");
+    if (!visibleLinks || !hiddenLinks || !toggle) return;
+
+    var originalItems = Array.from(visibleLinks.children).concat(Array.from(hiddenLinks.children));
+    if (!originalItems.length) return;
+
+    var narrowQuery = window.matchMedia("(max-width: 480px)");
+    var compactQuery = window.matchMedia("(max-width: 360px)");
+
+    function renderNav() {
+      visibleLinks.innerHTML = "";
+      hiddenLinks.innerHTML = "";
+
+      if (!narrowQuery.matches) {
+        originalItems.forEach(function (item) {
+          visibleLinks.appendChild(item);
+        });
+        toggle.classList.add("hidden");
+        toggle.classList.remove("close");
+        hiddenLinks.classList.add("hidden");
+        toggle.setAttribute("count", "0");
+        return;
+      }
+
+      var visibleCount = compactQuery.matches ? 2 : 3;
+      originalItems.forEach(function (item, index) {
+        if (index < visibleCount) {
+          visibleLinks.appendChild(item);
+        } else {
+          hiddenLinks.appendChild(item);
+        }
+      });
+
+      var hasHiddenItems = hiddenLinks.children.length > 0;
+      toggle.classList.toggle("hidden", !hasHiddenItems);
+      toggle.setAttribute("count", String(hiddenLinks.children.length));
+
+      if (!hasHiddenItems) {
+        hiddenLinks.classList.add("hidden");
+        toggle.classList.remove("close");
+      }
+    }
+
+    renderNav();
+    window.addEventListener("resize", renderNav, { passive: true });
+    window.addEventListener("load", renderNav, { once: true });
+    window.setTimeout(renderNav, 180);
+
+    if (typeof narrowQuery.addEventListener === "function") {
+      narrowQuery.addEventListener("change", renderNav);
+      compactQuery.addEventListener("change", renderNav);
+    } else if (typeof narrowQuery.addListener === "function") {
+      narrowQuery.addListener(renderNav);
+      compactQuery.addListener(renderNav);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileNav, { once: true });
+  } else {
+    initMobileNav();
+  }
+</script>

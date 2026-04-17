@@ -72,21 +72,15 @@ layout: default
 
       <section class="page__content e-content" itemprop="text">
         {% if page.toc %}
-          <div class="page__toc-mobile">
-            <details class="page__toc-mobile-panel">
-              <summary class="page__toc-mobile-summary">
-                <span class="page__toc-mobile-label">{{ site.data.ui-text[locale].toc_label | default: "On this page" }}</span>
+          <aside class="sidebar__right page__toc {% if page.toc_sticky %}sticky{% endif %}">
+            <details class="page__toc-panel">
+              <summary class="page__toc-summary">
+                <span class="page__toc-label">{{ site.data.ui-text[locale].toc_label | default: "On this page" }}</span>
               </summary>
-              <nav class="toc toc--mobile" aria-label="Table of contents">
+              <nav class="toc" aria-label="Table of contents">
                 {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
               </nav>
             </details>
-          </div>
-          <aside class="sidebar__right page__toc-desktop {% if page.toc_sticky %}sticky{% endif %}">
-            <nav class="toc" aria-label="Table of contents">
-              <header><h4 class="nav__title">{{ page.toc_label | default: page.title | default: site.data.ui-text[locale].toc_label | default: "On this page" }}</h4></header>
-              {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
-            </nav>
           </aside>
         {% endif %}
         {{ content }}
