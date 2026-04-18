@@ -1,6 +1,6 @@
 ---
-title: "我如何理解 OpenClaw 这类 Claw 应用"
-excerpt: "OpenClaw 这类产品真正打到大众的，不只是模型更强，而是它第一次把 Token 的能力变成了普通人可以感知的数字生产力。"
+title: "关于 OpenClaw 的个人思考"
+excerpt: "我越来越觉得，OpenClaw 真正打到大众的，不只是模型更强，而是它第一次把 Token 的能力变成了普通人可以感知的数字生产力。"
 date: 2026-04-18 00:10:00 +0800
 categories:
   - Essays

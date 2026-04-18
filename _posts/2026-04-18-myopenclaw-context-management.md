@@ -1,5 +1,5 @@
 ---
-title: "我对 myopenclaw 上下文管理的理解"
+title: "MyOpenClaw 的上下文管理思考"
 excerpt: "我越来越不相信所谓聪明的上下文裁剪。对 Agent 来说，轻易丢掉上下文是一件非常昂贵的事情。"
 date: 2026-04-18 00:20:00 +0800
 categories:
