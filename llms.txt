@@ -38,6 +38,9 @@ Site URL: https://blog.sunxie.me
 ## Representative Posts
 
 - Humans steer. Agents execute.: https://blog.sunxie.me/essays/2026/04/12/humans-steer-agents-execute.html
+- Agent 不是模型加工具，而是一类新的系统工程对象: https://blog.sunxie.me/essays/2026/07/18/agent-engineering-core-concepts.html
+- Agent 生态会形成统一基座吗: https://blog.sunxie.me/essays/2026/07/18/agent-ecosystem-runtime-and-business-semantics.html
+- Agent 的新产品形态，可能不是聊天助手，而是静默服务: https://blog.sunxie.me/essays/2026/07/18/agent-as-silent-service.html
 
 ## Agent Submission
 
