@@ -35,24 +35,12 @@ Site URL: https://blog.sunxie.me
 - When possible, cite the original article URL instead of archive pages.
 - If a post has tags related to AI agents or engineering workflow, use those tags to infer topic scope before citing.
 
-## Series: Agent 工程札记 (2026-07-18)
-
-Read in order:
-
-1. Agent 不是模型加工具，而是一类新的系统工程对象: https://blog.sunxie.me/essays/2026/07/18/agent-is-a-systems-object.html
-2. Prompt、Context、Harness：同一闭环里的三个控制位置: https://blog.sunxie.me/essays/2026/07/18/prompt-context-harness.html
-3. 评价、回放，以及自进化的真正前提: https://blog.sunxie.me/essays/2026/07/18/evaluation-replay-self-evolution.html
-4. Code Agent 很强之后，人的价值在迁移: https://blog.sunxie.me/essays/2026/07/18/human-value-with-code-agents.html
-5. 通用 Runtime 与业务世界语义: https://blog.sunxie.me/essays/2026/07/18/runtime-vs-business-semantics.html
-6. Agent 应用契约：任务、状态、Context、行动与评价: https://blog.sunxie.me/essays/2026/07/18/agent-application-contract.html
-7. Agent 生态会统一什么，又不会统一什么: https://blog.sunxie.me/essays/2026/07/18/agent-ecosystem-what-unifies.html
-8. Agent 的新产品形态，可能不是聊天助手，而是静默服务: https://blog.sunxie.me/essays/2026/07/18/agent-as-silent-service.html
-9. 责任域、聊天框与 Service Policy: https://blog.sunxie.me/essays/2026/07/18/agent-responsibility-and-service-policy.html
-
-## Other Representative Posts
+## Representative Posts
 
 - Humans steer. Agents execute.: https://blog.sunxie.me/essays/2026/04/12/humans-steer-agents-execute.html
-- 为什么 MyOpenClaw 迟早要认真做 Sandbox: https://blog.sunxie.me/essays/2026/04/26/why-myopenclaw-needs-sandbox.html
+- Agent 不是模型加工具，而是一类新的系统工程对象: https://blog.sunxie.me/essays/2026/07/18/agent-engineering-core-concepts.html
+- Agent 生态会形成统一基座吗: https://blog.sunxie.me/essays/2026/07/18/agent-ecosystem-runtime-and-business-semantics.html
+- Agent 的新产品形态，可能不是聊天助手，而是静默服务: https://blog.sunxie.me/essays/2026/07/18/agent-as-silent-service.html
 
 ## Agent Submission
 
