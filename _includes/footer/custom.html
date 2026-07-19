@@ -107,9 +107,118 @@
     apply(isDark());
   }
 
+  /**
+   * Scroll-spy for desktop TOC.
+   * Theme Gumshoe often fails when both mobile + desktop nav.toc exist;
+   * this only watches .page__toc-desktop and highlights the current section.
+   */
+  function initTocSpy() {
+    var tocRoot = document.querySelector(".page__toc-desktop nav.toc");
+    if (!tocRoot || tocRoot.dataset.spyBound === "1") return;
+
+    var links = Array.prototype.slice.call(
+      tocRoot.querySelectorAll(".toc__menu a[href^='#']")
+    );
+    if (!links.length) return;
+
+    var headings = [];
+    links.forEach(function (link) {
+      var href = link.getAttribute("href") || "";
+      var id = href.charAt(0) === "#" ? href.slice(1) : "";
+      if (!id) return;
+      var el = null;
+      try {
+        el = document.getElementById(id) || document.getElementById(decodeURIComponent(id));
+      } catch (e) {
+        el = document.getElementById(id);
+      }
+      if (el) {
+        headings.push({ el: el, id: el.id || id, link: link });
+      }
+    });
+    if (!headings.length) return;
+
+    tocRoot.dataset.spyBound = "1";
+    var lastId = null;
+    var topOffset = 96; // masthead + breathing room
+
+    function clearActive() {
+      tocRoot.querySelectorAll(".toc__menu li.active, .toc__menu li.is-active").forEach(function (li) {
+        li.classList.remove("active", "is-active");
+      });
+      tocRoot.querySelectorAll(".toc__menu a.active, .toc__menu a.is-active").forEach(function (a) {
+        a.classList.remove("active", "is-active");
+      });
+    }
+
+    function setActive(entry) {
+      if (!entry || entry.id === lastId) return;
+      lastId = entry.id;
+      clearActive();
+
+      var link = entry.link;
+      link.classList.add("active", "is-active");
+
+      var li = link.closest("li");
+      while (li && tocRoot.contains(li)) {
+        li.classList.add("active", "is-active");
+        var parentUl = li.parentElement;
+        li = parentUl && parentUl.closest ? parentUl.closest("li") : null;
+      }
+
+      // Keep active item visible inside long TOC
+      try {
+        link.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+      } catch (e) {
+        /* ignore */
+      }
+    }
+
+    function update() {
+      // Choose the last heading whose top has crossed the offset line
+      var current = headings[0];
+      for (var i = 0; i < headings.length; i++) {
+        var top = headings[i].el.getBoundingClientRect().top;
+        if (top - topOffset <= 0) {
+          current = headings[i];
+        } else {
+          break;
+        }
+      }
+      // Near page bottom: force last section
+      var scrollBottom = window.innerHeight + window.pageYOffset;
+      var docHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+      if (docHeight - scrollBottom < 48) {
+        current = headings[headings.length - 1];
+      }
+      setActive(current);
+    }
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        update();
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    // Run after layout / images settle
+    update();
+    window.setTimeout(update, 200);
+    window.setTimeout(update, 800);
+  }
+
   function boot() {
     initMobileNav();
     initThemeToggle();
+    initTocSpy();
   }
 
   if (document.readyState === "loading") {
