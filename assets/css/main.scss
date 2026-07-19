@@ -394,8 +394,8 @@ body.layout--archive {
   }
 }
 
-// Slim TOC rail; article + TOC centered as one unit (not left-biased).
-$toc-rail: 11rem;
+// TOC rail: restore pre-slim appearance (~MM 200px), keep centered shell.
+$toc-rail: 12.5rem; // 200px
 $toc-gap: 1.5rem;
 $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
 
@@ -407,21 +407,19 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     border-left: 1px solid var(--border);
     border-radius: 0;
     background: transparent;
-    padding: 0 0 0 0.75rem;
+    padding: 0 0 0 1rem;
     box-shadow: none;
   }
 
   .nav__title {
-    margin: 0 0 0.55rem;
-    padding: 0 0 0.4rem;
+    margin: 0 0 0.85rem;
+    padding: 0 0 0.45rem;
     border-bottom: 1px solid var(--border);
     background: transparent !important;
     color: var(--secondary) !important;
-    font-size: 0.72rem !important;
-    line-height: 1.4;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: none;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    font-weight: 500;
     word-break: break-word;
     box-shadow: none;
   }
@@ -429,7 +427,6 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
   .toc__menu {
     margin: 0;
     padding: 0;
-    font-size: 0.75rem !important;
 
     li {
       list-style: none;
@@ -440,22 +437,22 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     a {
       position: relative;
       display: block;
-      padding: 0.2rem 0 0.2rem 0.55rem;
+      padding: 0.28rem 0 0.28rem 0.8rem;
       border: 0 !important;
       background: transparent !important;
       box-shadow: none;
       color: var(--secondary);
-      font-size: 0.75rem !important;
-      font-weight: 400 !important;
-      line-height: 1.45;
+      font-size: 0.89rem;
+      line-height: 1.65;
       text-decoration: none;
+      font-weight: 400;
 
       &::before {
         content: "";
         position: absolute;
         left: 0;
-        top: 0.35rem;
-        bottom: 0.35rem;
+        top: 0.44rem;
+        bottom: 0.44rem;
         width: 1.5px;
         border-radius: 999px;
         background: transparent;
@@ -468,21 +465,20 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     }
 
     ul {
-      margin: 0.04rem 0 0.1rem;
-      padding-left: 0.45rem;
+      margin: 0.08rem 0 0.16rem;
+      padding-left: 0.65rem;
 
       a {
-        font-size: 0.7rem !important;
-        font-weight: 400 !important;
+        font-size: 0.83rem;
         color: var(--secondary);
-        padding-inline-start: 0.55rem !important;
+        font-weight: 400;
       }
     }
 
     > li.active > a,
     li.active > a {
       color: var(--primary);
-      font-weight: 600 !important;
+      font-weight: 600;
       background: transparent !important;
 
       &::before {
