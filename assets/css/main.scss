@@ -687,19 +687,22 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     max-width: $article-shell !important;
   }
 
-  // All prose in column 1
+  // All prose in column 1 (each block is a grid item under MM markup)
   .layout--single .page__content > * {
     grid-column: 1;
     min-width: 0;
   }
 
-  // TOC in column 2, sticky, no float
+  // TOC in column 2: span full article height so sticky can track while scrolling.
+  // align-self:start + max-height keeps the panel viewport-sized; overscroll
+  // containment stops wheel events from feeling "stuck" on the TOC.
   .layout--single .page__content > .sidebar__right,
   .layout--single .page__content > .sidebar__right.sticky {
     grid-column: 2 !important;
-    grid-row: 1 / span 50;
+    grid-row: 1 / -1;
     position: sticky !important;
     top: 5rem;
+    align-self: start;
     float: none !important;
     clear: none !important;
     width: 100% !important;
@@ -715,6 +718,8 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     max-height: calc(100vh - 6rem);
     overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .layout--single .page__content > .sidebar__right .toc,
@@ -722,6 +727,7 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     position: static !important;
     width: 100% !important;
     max-height: none;
+    overflow: visible;
     left: auto !important;
   }
 
@@ -729,6 +735,29 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     max-height: none;
     overflow: visible;
   }
+}
+
+// Hard guarantee: never lock document scroll from our layout
+html,
+body {
+  overflow-y: auto !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+body.layout--single .initial-content,
+body.layout--single #main,
+body.layout--single .page,
+body.layout--single .page__inner-wrap {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+// page__content must stay overflow:visible so sticky TOC is not trapped
+// in a zero-height / non-scrolling ancestor
+body.layout--single .page__content {
+  overflow: visible !important;
+  max-height: none !important;
 }
 
 .page__title {

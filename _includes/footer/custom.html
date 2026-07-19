@@ -151,6 +151,23 @@
       });
     }
 
+    function scrollLinkIntoToc(link) {
+      // Only adjust the TOC panel's own scrollTop — never call
+      // element.scrollIntoView(), which can hijack window scrolling.
+      var panel =
+        document.querySelector(".page__toc-desktop.sidebar__right") ||
+        tocRoot.closest(".sidebar__right");
+      if (!panel || !link) return;
+      var panelRect = panel.getBoundingClientRect();
+      var linkRect = link.getBoundingClientRect();
+      var pad = 12;
+      if (linkRect.top < panelRect.top + pad) {
+        panel.scrollTop -= panelRect.top + pad - linkRect.top;
+      } else if (linkRect.bottom > panelRect.bottom - pad) {
+        panel.scrollTop += linkRect.bottom - (panelRect.bottom - pad);
+      }
+    }
+
     function setActive(entry) {
       if (!entry || entry.id === lastId) return;
       lastId = entry.id;
@@ -166,12 +183,7 @@
         li = parentUl && parentUl.closest ? parentUl.closest("li") : null;
       }
 
-      // Keep active item visible inside long TOC
-      try {
-        link.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
-      } catch (e) {
-        /* ignore */
-      }
+      scrollLinkIntoToc(link);
     }
 
     function update() {
