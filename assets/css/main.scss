@@ -394,9 +394,10 @@ body.layout--archive {
   }
 }
 
-// Desktop TOC: hang outside the article column so body keeps ~720px
-// (MM sticky float-right otherwise eats half the reading width.)
-$toc-rail: 10.5rem; // ~168px
+// Slim TOC rail; article + TOC centered as one unit (not left-biased).
+$toc-rail: 11rem;
+$toc-gap: 1.5rem;
+$article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
 
 .sidebar__right {
   margin-bottom: 1em;
@@ -491,53 +492,6 @@ $toc-rail: 10.5rem; // ~168px
   }
 }
 
-@media (min-width: 64em) {
-  // Hang TOC outside content; do not float into the article flow
-  .layout--single .sidebar__right,
-  .layout--single .sidebar__right.sticky {
-    position: absolute !important;
-    top: 0;
-    inset-inline-end: auto !important;
-    left: calc(100% + 1rem) !important;
-    right: auto !important;
-    float: none !important;
-    clear: none !important;
-    width: $toc-rail !important;
-    max-width: $toc-rail !important;
-    margin: 0 !important;
-    margin-inline-end: 0 !important;
-    padding-inline-start: 0 !important;
-    z-index: 5;
-  }
-
-  .layout--single .sidebar__right.sticky {
-    position: sticky !important;
-    top: 5rem;
-    // sticky still needs a place in flow without stealing width:
-    // zero-width float with hanging content
-    float: right !important;
-    width: 0 !important;
-    max-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-
-    .toc {
-      position: absolute;
-      left: 1rem; // just outside the content box
-      top: 0;
-      width: $toc-rail;
-      max-height: calc(100vh - 6rem);
-      overflow-y: auto;
-    }
-  }
-
-  .layout--single .sidebar__right.sticky .toc .toc__menu {
-    max-height: none;
-    overflow: visible;
-  }
-}
-
 .page__toc-mobile {
   margin-bottom: 1.35rem;
 }
@@ -623,38 +577,132 @@ $toc-rail: 10.5rem; // ~168px
 }
 
 // ========================================
-// Single post
+// Single post — balanced centered shell
 // ========================================
+// MM reserves 200–300px on .page for a left author rail that we don't use,
+// which shoves the article mid-left. Kill that and center article+TOC as one unit.
 
-// Shell wide enough for 720px article + external TOC rail
 .layout--single #main {
-  max-width: calc(var(--main-width) + #{$toc-rail} + 3rem) !important;
-  margin-inline: auto !important;
   float: none !important;
+  width: 100% !important;
+  max-width: calc(#{$article-shell} + var(--gap) * 2) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--gap) !important;
   position: relative;
   overflow: visible;
+  box-sizing: border-box;
+}
+
+// Hide empty left author sidebar so it can't push content
+.layout--single > .sidebar,
+.layout--single #main > .sidebar {
+  display: none !important;
 }
 
 .layout--single .page,
 .layout--single .page__inner-wrap {
   float: none !important;
+  clear: both !important;
   width: 100% !important;
-  max-width: var(--main-width);
-  margin-inline: auto;
+  max-width: $article-shell !important;
+  margin-inline: auto !important;
+  padding-inline: 0 !important;
+  padding-inline-end: 0 !important;
   position: relative;
   overflow: visible;
+  box-sizing: border-box;
 }
 
-// Article column keeps full main-width; TOC hangs outside
+// Title / meta align with article column (not full shell incl. TOC)
+.layout--single .page__inner-wrap > header,
+.layout--single .page__toc-mobile,
+.layout--single .page__inner-wrap > .page__meta,
+.layout--single .page__inner-wrap > .pagination,
+.layout--single .page__inner-wrap > footer.page__meta {
+  max-width: var(--main-width);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// Two-column grid: [ article ~720 ] [ toc ~176 ], unit centered via parent
 .layout--single .page__content {
+  display: block;
   float: none !important;
+  clear: both !important;
   width: 100% !important;
-  max-width: 100%;
+  max-width: $article-shell !important;
+  margin-inline: 0 !important;
+  padding-inline-end: 0 !important;
   position: relative;
   overflow: visible;
+  box-sizing: border-box;
   @include font-sans;
   font-size: 1rem;
   line-height: 1.75;
+}
+
+@media (min-width: 64em) {
+  .layout--single .page,
+  .layout--single .page__inner-wrap {
+    float: none !important;
+    width: 100% !important;
+    max-width: $article-shell !important;
+    padding-inline-end: 0 !important;
+    margin-inline: auto !important;
+  }
+
+  .layout--single .page__content {
+    display: grid !important;
+    grid-template-columns: minmax(0, var(--main-width)) $toc-rail;
+    column-gap: $toc-gap;
+    justify-content: start;
+    align-items: start;
+    width: 100% !important;
+    max-width: $article-shell !important;
+  }
+
+  // All prose in column 1
+  .layout--single .page__content > * {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  // TOC in column 2, sticky, no float
+  .layout--single .page__content > .sidebar__right,
+  .layout--single .page__content > .sidebar__right.sticky {
+    grid-column: 2 !important;
+    grid-row: 1 / span 50;
+    position: sticky !important;
+    top: 5rem;
+    float: none !important;
+    clear: none !important;
+    width: 100% !important;
+    max-width: $toc-rail !important;
+    margin: 0 !important;
+    margin-inline-end: 0 !important;
+    padding: 0 !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: 5;
+    height: fit-content;
+    max-height: calc(100vh - 6rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .layout--single .page__content > .sidebar__right .toc,
+  .layout--single .page__content > .sidebar__right.sticky .toc {
+    position: static !important;
+    width: 100% !important;
+    max-height: none;
+    left: auto !important;
+  }
+
+  .layout--single .sidebar__right.sticky .toc .toc__menu {
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .page__title {
@@ -1010,19 +1058,17 @@ $toc-rail: 10.5rem; // ~168px
     max-width: calc(var(--main-width) + var(--gap) * 2) !important;
   }
 
+  // Kill MM .page sidebar reserve (this was the mid-left bias)
+  .layout--single .page {
+    float: none !important;
+    width: 100% !important;
+    max-width: $article-shell !important;
+    padding-inline-end: 0 !important;
+    margin-inline: auto !important;
+  }
+
   .layout--single #main {
-    max-width: calc(var(--main-width) + #{$toc-rail} + 3rem) !important;
-  }
-
-  // Beat MM's 200–300px sticky TOC inside the article
-  .layout--single .sidebar__right,
-  .layout--single .sidebar__right.sticky {
-    width: 0 !important;
-  }
-
-  .layout--single .sidebar__right .toc,
-  .layout--single .sidebar__right.sticky .toc {
-    width: $toc-rail !important;
+    max-width: calc(#{$article-shell} + var(--gap) * 2) !important;
   }
 }
 
@@ -1041,14 +1087,15 @@ $toc-rail: 10.5rem; // ~168px
     max-width: calc(var(--main-width) + var(--gap) * 2) !important;
   }
 
-  .layout--single #main {
-    max-width: calc(var(--main-width) + #{$toc-rail} + 3rem) !important;
+  .layout--single .page {
+    float: none !important;
+    width: 100% !important;
+    max-width: $article-shell !important;
+    padding-inline-end: 0 !important;
+    margin-inline: auto !important;
   }
 
-  // MM sets sidebar__right to 300px at 80em — force slim rail
-  .layout--single .sidebar__right,
-  .layout--single .sidebar__right.sticky {
-    width: 0 !important;
-    margin-inline-end: 0 !important;
+  .layout--single #main {
+    max-width: calc(#{$article-shell} + var(--gap) * 2) !important;
   }
 }
