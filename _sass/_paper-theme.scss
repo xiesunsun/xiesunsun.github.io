@@ -6,7 +6,7 @@
 @import "fonts-paper";
 
 html {
-  font-size: $base-font-size;
+  font-size: $base-font-size !important;
 }
 
 body {
@@ -16,6 +16,7 @@ body {
   color: var(--content);
   line-height: $base-line-height;
   font-weight: 400;
+  font-size: $base-font-size;
 }
 
 h1,
@@ -27,7 +28,7 @@ h6 {
   @include font-sans;
   color: var(--primary);
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.35;
   margin-top: 1.25em;
   margin-bottom: 0.6em;
 

@@ -20,8 +20,21 @@
 @import "paper-theme";
 
 // ========================================
-// Site chrome
+// Root type + layout shell (override MM)
 // ========================================
+
+// MM scales html to 18/20/22px — breaks Lil'Log-like proportions
+html {
+  font-size: 16px !important;
+}
+
+body {
+  @include font-sans;
+  font-size: 16px;
+  line-height: $base-line-height;
+}
+
+// Kill MM fluid type media queries effectively (html already fixed)
 
 .page-wrapper {
   max-width: none;
@@ -29,15 +42,47 @@
   padding: 0;
 }
 
+// Center main column like Lil'Log .main
+#main {
+  float: none !important;
+  clear: both;
+  width: 100% !important;
+  max-width: calc(var(--main-width) + var(--gap) * 2) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--gap) !important;
+  box-sizing: border-box;
+}
+
+// MM reserves 200–300px for author sidebar on .archive even when empty
+.archive {
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: var(--gap) 0 !important;
+  padding-inline-end: 0 !important;
+  box-sizing: border-box;
+}
+
+.initial-content {
+  width: 100%;
+}
+
+// ========================================
+// Site chrome
+// ========================================
+
 .masthead {
   background: var(--theme);
   border-bottom: 1px solid var(--border);
 
   .greedy-nav {
     background: transparent;
+    @include font-sans;
 
     a {
       color: var(--primary);
+      @include font-sans;
 
       &:hover {
         color: var(--primary);
@@ -70,6 +115,8 @@
 .masthead__inner-wrap {
   max-width: calc(var(--nav-width) + var(--gap) * 2);
   margin-inline: auto;
+  padding-inline: var(--gap);
+  @include font-sans;
 }
 
 // Theme toggle (injected next to site title)
@@ -127,19 +174,21 @@ html.dark #theme-toggle {
 // ========================================
 
 .home-welcome {
-  max-width: calc(var(--main-width) + var(--gap) * 2);
-  margin: calc(var(--gap) * 1.75) auto var(--gap);
-  padding: 0 var(--gap);
+  width: 100%;
+  max-width: 100%;
+  margin: calc(var(--gap) * 1.5) auto var(--gap);
+  padding: 0;
   text-align: center;
 }
 
 .home-welcome__title {
   margin: 0;
+  @include font-sans;
   font-size: 1.75rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--primary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   border: 0;
   padding: 0;
 }
@@ -167,18 +216,19 @@ body.layout--archive {
   background: var(--code-bg);
 }
 
-.archive {
-  max-width: calc(var(--main-width) + var(--gap) * 2);
-  margin-inline: auto;
-  padding: var(--gap);
-}
-
 .archive__subtitle {
   color: var(--secondary);
   font-size: 0.875rem;
   font-weight: 500;
   border: 0;
   margin-bottom: 1rem;
+  @include font-sans;
+}
+
+.entries-list {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .entries-list .list__item,
@@ -186,12 +236,16 @@ body.layout--archive {
 .archive .list__item,
 .archive .archive__item {
   position: relative;
-  margin-bottom: var(--gap);
+  float: none !important;
+  width: 100% !important;
+  max-width: 100%;
+  margin: 0 0 var(--gap);
   padding: var(--gap);
   background: var(--entry);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   transition: transform 0.1s ease, border-color 0.15s ease;
+  box-sizing: border-box;
 
   &:last-child {
     margin-bottom: 0;
@@ -207,16 +261,21 @@ body.layout--archive {
 }
 
 .archive__item-title {
-  font-size: 1.35rem;
-  line-height: 1.3;
+  @include font-sans;
+  font-size: 1.25rem; // ~20px @ 16 root — closer to Lil'Log card titles
+  line-height: 1.4;
   margin: 0;
   font-weight: 600;
   color: var(--primary);
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
 
   a {
     color: var(--primary);
     text-decoration: none;
     box-shadow: none;
+    @include font-sans;
 
     // Full-card hit target
     &::after {
@@ -237,17 +296,28 @@ body.layout--archive {
   margin: 0.5rem 0 0;
   color: var(--secondary);
   font-size: 0.875rem;
-  line-height: 1.6;
+  line-height: 1.65;
+  @include font-sans;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
 
+// MM sets list meta to 0.6em — too small for CJK
+.list__item .page__meta,
+.list__item .comment__date,
+.entries-list .page__meta {
+  margin: 0.35rem 0 0 !important;
+  font-size: 0.8125rem !important;
+  @include font-sans;
+}
+
 .page__meta {
   position: relative;
   z-index: 2;
   color: var(--secondary);
+  @include font-sans;
   font-size: 0.8125rem;
   margin-top: 0.35rem;
   margin-bottom: 0;
@@ -495,17 +565,35 @@ body.layout--archive {
 // Single post
 // ========================================
 
+// Posts: slightly wider shell if TOC exists; content still ~720
 .layout--single #main {
-  max-width: calc(var(--main-width) + 280px);
+  max-width: calc(var(--main-width) + 240px) !important;
+  margin-inline: auto !important;
+  float: none !important;
+}
+
+.layout--single .page,
+.layout--single .page__inner-wrap {
+  float: none !important;
+  width: 100% !important;
+  max-width: var(--main-width);
   margin-inline: auto;
 }
 
-.layout--single .page {
+.layout--single .page__content {
+  float: none !important;
+  width: 100% !important;
   max-width: var(--main-width);
+  @include font-sans;
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
 .page__title {
   color: var(--primary);
+  @include font-sans;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .archive-page {
@@ -825,5 +913,55 @@ body.layout--archive {
 
   code {
     background: #f5f5f5;
+  }
+}
+
+// ========================================
+// Breakpoint overrides — beat MM sidebar reserve
+// ========================================
+
+@media (min-width: 48em) {
+  html {
+    font-size: 16px !important;
+  }
+}
+
+@media (min-width: 64em) {
+  html {
+    font-size: 16px !important;
+  }
+
+  .archive {
+    float: none !important;
+    width: 100% !important;
+    padding-inline-end: 0 !important;
+  }
+
+  #main {
+    max-width: calc(var(--main-width) + var(--gap) * 2) !important;
+  }
+
+  .layout--single #main {
+    max-width: calc(var(--main-width) + 240px) !important;
+  }
+}
+
+@media (min-width: 80em) {
+  html {
+    font-size: 16px !important;
+  }
+
+  .archive {
+    float: none !important;
+    width: 100% !important;
+    padding-inline-end: 0 !important;
+  }
+
+  #main {
+    max-width: calc(var(--main-width) + var(--gap) * 2) !important;
+  }
+
+  .layout--single #main {
+    max-width: calc(var(--main-width) + 240px) !important;
   }
 }
