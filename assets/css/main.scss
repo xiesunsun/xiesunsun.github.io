@@ -394,25 +394,33 @@ body.layout--archive {
   }
 }
 
+// Desktop TOC: hang outside the article column so body keeps ~720px
+// (MM sticky float-right otherwise eats half the reading width.)
+$toc-rail: 10.5rem; // ~168px
+
 .sidebar__right {
+  margin-bottom: 1em;
+
   .toc {
     border: 0;
     border-left: 1px solid var(--border);
     border-radius: 0;
     background: transparent;
-    padding: 0 0 0 1rem;
+    padding: 0 0 0 0.75rem;
     box-shadow: none;
   }
 
   .nav__title {
-    margin: 0 0 0.85rem;
-    padding: 0 0 0.45rem;
+    margin: 0 0 0.55rem;
+    padding: 0 0 0.4rem;
     border-bottom: 1px solid var(--border);
-    background: transparent;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    color: var(--secondary);
-    font-weight: 500;
+    background: transparent !important;
+    color: var(--secondary) !important;
+    font-size: 0.72rem !important;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: none;
     word-break: break-word;
     box-shadow: none;
   }
@@ -420,6 +428,7 @@ body.layout--archive {
   .toc__menu {
     margin: 0;
     padding: 0;
+    font-size: 0.75rem !important;
 
     li {
       list-style: none;
@@ -430,21 +439,22 @@ body.layout--archive {
     a {
       position: relative;
       display: block;
-      padding: 0.28rem 0 0.28rem 0.8rem;
-      border: 0;
-      background: transparent;
+      padding: 0.2rem 0 0.2rem 0.55rem;
+      border: 0 !important;
+      background: transparent !important;
       box-shadow: none;
       color: var(--secondary);
-      font-size: 0.89rem;
-      line-height: 1.65;
+      font-size: 0.75rem !important;
+      font-weight: 400 !important;
+      line-height: 1.45;
       text-decoration: none;
 
       &::before {
         content: "";
         position: absolute;
         left: 0;
-        top: 0.44rem;
-        bottom: 0.44rem;
+        top: 0.35rem;
+        bottom: 0.35rem;
         width: 1.5px;
         border-radius: 999px;
         background: transparent;
@@ -452,28 +462,79 @@ body.layout--archive {
 
       &:hover {
         color: var(--primary);
+        background: transparent !important;
       }
     }
 
     ul {
-      margin: 0.08rem 0 0.16rem;
-      padding-left: 0.65rem;
+      margin: 0.04rem 0 0.1rem;
+      padding-left: 0.45rem;
 
       a {
-        font-size: 0.83rem;
+        font-size: 0.7rem !important;
+        font-weight: 400 !important;
         color: var(--secondary);
+        padding-inline-start: 0.55rem !important;
       }
     }
 
     > li.active > a,
     li.active > a {
       color: var(--primary);
-      font-weight: 600;
+      font-weight: 600 !important;
+      background: transparent !important;
 
       &::before {
         background: var(--primary);
       }
     }
+  }
+}
+
+@media (min-width: 64em) {
+  // Hang TOC outside content; do not float into the article flow
+  .layout--single .sidebar__right,
+  .layout--single .sidebar__right.sticky {
+    position: absolute !important;
+    top: 0;
+    inset-inline-end: auto !important;
+    left: calc(100% + 1rem) !important;
+    right: auto !important;
+    float: none !important;
+    clear: none !important;
+    width: $toc-rail !important;
+    max-width: $toc-rail !important;
+    margin: 0 !important;
+    margin-inline-end: 0 !important;
+    padding-inline-start: 0 !important;
+    z-index: 5;
+  }
+
+  .layout--single .sidebar__right.sticky {
+    position: sticky !important;
+    top: 5rem;
+    // sticky still needs a place in flow without stealing width:
+    // zero-width float with hanging content
+    float: right !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+
+    .toc {
+      position: absolute;
+      left: 1rem; // just outside the content box
+      top: 0;
+      width: $toc-rail;
+      max-height: calc(100vh - 6rem);
+      overflow-y: auto;
+    }
+  }
+
+  .layout--single .sidebar__right.sticky .toc .toc__menu {
+    max-height: none;
+    overflow: visible;
   }
 }
 
@@ -565,11 +626,13 @@ body.layout--archive {
 // Single post
 // ========================================
 
-// Posts: slightly wider shell if TOC exists; content still ~720
+// Shell wide enough for 720px article + external TOC rail
 .layout--single #main {
-  max-width: calc(var(--main-width) + 240px) !important;
+  max-width: calc(var(--main-width) + #{$toc-rail} + 3rem) !important;
   margin-inline: auto !important;
   float: none !important;
+  position: relative;
+  overflow: visible;
 }
 
 .layout--single .page,
@@ -578,12 +641,17 @@ body.layout--archive {
   width: 100% !important;
   max-width: var(--main-width);
   margin-inline: auto;
+  position: relative;
+  overflow: visible;
 }
 
+// Article column keeps full main-width; TOC hangs outside
 .layout--single .page__content {
   float: none !important;
   width: 100% !important;
-  max-width: var(--main-width);
+  max-width: 100%;
+  position: relative;
+  overflow: visible;
   @include font-sans;
   font-size: 1rem;
   line-height: 1.75;
@@ -594,6 +662,7 @@ body.layout--archive {
   @include font-sans;
   font-weight: 700;
   line-height: 1.35;
+  font-size: clamp(1.6rem, 2.5vw, 2rem);
 }
 
 .archive-page {
@@ -937,12 +1006,23 @@ body.layout--archive {
     padding-inline-end: 0 !important;
   }
 
-  #main {
+  body:not(.layout--single) #main {
     max-width: calc(var(--main-width) + var(--gap) * 2) !important;
   }
 
   .layout--single #main {
-    max-width: calc(var(--main-width) + 240px) !important;
+    max-width: calc(var(--main-width) + #{$toc-rail} + 3rem) !important;
+  }
+
+  // Beat MM's 200–300px sticky TOC inside the article
+  .layout--single .sidebar__right,
+  .layout--single .sidebar__right.sticky {
+    width: 0 !important;
+  }
+
+  .layout--single .sidebar__right .toc,
+  .layout--single .sidebar__right.sticky .toc {
+    width: $toc-rail !important;
   }
 }
 
@@ -957,11 +1037,18 @@ body.layout--archive {
     padding-inline-end: 0 !important;
   }
 
-  #main {
+  body:not(.layout--single) #main {
     max-width: calc(var(--main-width) + var(--gap) * 2) !important;
   }
 
   .layout--single #main {
-    max-width: calc(var(--main-width) + 240px) !important;
+    max-width: calc(var(--main-width) + #{$toc-rail} + 3rem) !important;
+  }
+
+  // MM sets sidebar__right to 300px at 80em — force slim rail
+  .layout--single .sidebar__right,
+  .layout--single .sidebar__right.sticky {
+    width: 0 !important;
+    margin-inline-end: 0 !important;
   }
 }
