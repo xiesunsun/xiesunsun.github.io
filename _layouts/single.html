@@ -74,7 +74,7 @@ layout: default
         <div class="page__toc-mobile">
           <details class="page__toc-panel">
             <summary class="page__toc-summary">
-              <span class="page__toc-label">{{ site.data.ui-text[locale].toc_label | default: "On this page" }}</span>
+              <span class="page__toc-label">{{ site.data.ui-text[locale].toc_label | default: "本页目录" }}</span>
             </summary>
             <nav class="toc" aria-label="Table of contents">
               {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" skip_no_ids=true %}
@@ -83,9 +83,18 @@ layout: default
         </div>
       {% endif %}
 
-      <section class="page__content e-content" itemprop="text">
+      {%- comment -%}
+        Keep TOC outside .page__content so prose stays normal block flow.
+        (Grid-on-page__content was turning every <p>/<h2> into a grid cell.)
+      {%- endcomment -%}
+      <div class="post-layout{% if page.toc %} post-layout--with-toc{% endif %}">
+        <section class="page__content e-content" itemprop="text">
+          {{ content }}
+          {% if page.link %}<div><a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
+        </section>
+
         {% if page.toc %}
-          <aside class="sidebar__right page__toc-desktop {% if page.toc_sticky %}sticky{% endif %}">
+          <aside class="sidebar__right page__toc-desktop {% if page.toc_sticky %}sticky{% endif %}" id="page-toc">
             <nav class="toc" aria-label="Table of contents">
               <header>
                 <h4 class="nav__title">{{ page.toc_label | default: site.data.ui-text[locale].toc_label | default: "本页目录" }}</h4>
@@ -94,9 +103,7 @@ layout: default
             </nav>
           </aside>
         {% endif %}
-        {{ content }}
-        {% if page.link %}<div><a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
-      </section>
+      </div>
 
       <footer class="page__meta">
         {% if site.data.ui-text[locale].meta_label %}

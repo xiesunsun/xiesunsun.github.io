@@ -394,14 +394,14 @@ body.layout--archive {
   }
 }
 
-// TOC: comfortable size + clear scroll-spy active state.
-// Keep article+TOC centered as one unit (layout fix stays).
-$toc-rail: 15rem; // ~240px — readable, not tiny
+// TOC rail next to prose (prose itself is normal block flow, not a grid of <p>s)
+$toc-rail: 15rem;
 $toc-gap: 1.75rem;
 $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
 
-.sidebar__right {
-  margin-bottom: 1em;
+.sidebar__right,
+.page__toc-desktop {
+  margin-bottom: 0;
 
   .toc {
     border: 0;
@@ -429,6 +429,7 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
   .toc__menu {
     margin: 0;
     padding: 0;
+    list-style: none;
 
     li {
       list-style: none;
@@ -445,13 +446,12 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
       background: transparent !important;
       box-shadow: none !important;
       color: var(--secondary);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       line-height: 1.5;
       text-decoration: none;
       font-weight: 400;
-      transition: color 0.15s ease, background-color 0.15s ease;
+      transition: color 0.12s ease, background-color 0.12s ease;
 
-      // left indicator rail
       &::before {
         content: "";
         position: absolute;
@@ -461,7 +461,7 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
         width: 2px;
         border-radius: 999px;
         background: transparent;
-        transition: background-color 0.15s ease;
+        transition: background-color 0.12s ease;
       }
 
       &:hover {
@@ -471,22 +471,19 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     }
 
     ul {
-      margin: 0.1rem 0 0.2rem;
+      margin: 0.1rem 0 0.15rem;
       padding-left: 0.55rem;
+      list-style: none;
 
       a {
-        font-size: 0.86rem;
-        color: var(--secondary);
-        font-weight: 400;
+        font-size: 0.84rem;
         padding-top: 0.28rem;
         padding-bottom: 0.28rem;
       }
     }
 
-    // Active section (Gumshoe uses li.active; our spy also sets .is-active)
-    > li.active > a,
+    // Current reading section
     li.active > a,
-    > li.is-active > a,
     li.is-active > a,
     a.active,
     a.is-active {
@@ -498,24 +495,7 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
         background: var(--primary) !important;
       }
     }
-
-    // Ancestors stay lightly emphasized while a child is active
-    li.active:not(.is-active) > a,
-    li.is-active li.is-active > a {
-      // child rule handled above
-    }
-
-    li.active > a,
-    li.is-active > a {
-      color: var(--primary);
-    }
   }
-}
-
-// Sticky TOC panel scroll when long
-.layout--single .page__content > .sidebar__right.sticky {
-  scrollbar-width: thin;
-  scrollbar-color: var(--tertiary) transparent;
 }
 
 .page__toc-mobile {
@@ -603,10 +583,10 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
 }
 
 // ========================================
-// Single post — balanced centered shell
+// Single post — normal prose + optional TOC column
 // ========================================
-// MM reserves 200–300px on .page for a left author rail that we don't use,
-// which shoves the article mid-left. Kill that and center article+TOC as one unit.
+// Critical: NEVER put display:grid on .page__content itself — Jekyll dumps
+// every <p>/<h2>/<ul> as a direct child, and grid destroys reading layout.
 
 .layout--single #main {
   float: none !important;
@@ -615,11 +595,9 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
   margin-inline: auto !important;
   padding-inline: var(--gap) !important;
   position: relative;
-  overflow: visible;
   box-sizing: border-box;
 }
 
-// Hide empty left author sidebar so it can't push content
 .layout--single > .sidebar,
 .layout--single #main > .sidebar {
   display: none !important;
@@ -635,11 +613,9 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
   padding-inline: 0 !important;
   padding-inline-end: 0 !important;
   position: relative;
-  overflow: visible;
   box-sizing: border-box;
 }
 
-// Title / meta align with article column (not full shell incl. TOC)
 .layout--single .page__inner-wrap > header,
 .layout--single .page__toc-mobile,
 .layout--single .page__inner-wrap > .page__meta,
@@ -650,23 +626,68 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
   box-sizing: border-box;
 }
 
-// Two-column grid: [ article ~720 ] [ toc ~176 ], unit centered via parent
-.layout--single .page__content {
+// Wrapper: only two children (prose section + toc aside)
+.post-layout {
   display: block;
-  float: none !important;
-  clear: both !important;
-  width: 100% !important;
-  max-width: $article-shell !important;
-  margin-inline: 0 !important;
-  padding-inline-end: 0 !important;
-  position: relative;
-  overflow: visible;
+  width: 100%;
+  max-width: $article-shell;
+  margin: 0;
   box-sizing: border-box;
+}
+
+// Prose: classic document flow
+.layout--single .page__content {
+  display: block !important;
+  float: none !important;
+  clear: none !important;
+  width: 100% !important;
+  max-width: var(--main-width) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
   @include font-sans;
   font-size: 1rem;
   line-height: 1.75;
+  color: var(--content);
+
+  > * {
+    // undo any accidental grid-column from older CSS
+    grid-column: auto !important;
+    max-width: 100%;
+  }
+
+  p {
+    margin: 0 0 1.15em;
+    line-height: 1.75;
+  }
+
+  h2,
+  h3,
+  h4 {
+    margin-top: 1.6em;
+    margin-bottom: 0.65em;
+    line-height: 1.35;
+    color: var(--primary);
+  }
+
+  ul,
+  ol {
+    margin: 0 0 1.15em;
+    padding-inline-start: 1.4em;
+
+    li {
+      margin: 0.35em 0;
+      line-height: 1.7;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
+// Desktop: prose | toc, centered as one unit
 @media (min-width: 64em) {
   .layout--single .page,
   .layout--single .page__inner-wrap {
@@ -677,86 +698,52 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     margin-inline: auto !important;
   }
 
-  .layout--single .page__content {
+  .post-layout--with-toc {
     display: grid !important;
     grid-template-columns: minmax(0, var(--main-width)) $toc-rail;
     column-gap: $toc-gap;
-    justify-content: start;
     align-items: start;
-    width: 100% !important;
-    max-width: $article-shell !important;
+    width: 100%;
+    max-width: $article-shell;
   }
 
-  // All prose in column 1 (each block is a grid item under MM markup)
-  .layout--single .page__content > * {
+  .post-layout--with-toc .page__content {
     grid-column: 1;
-    min-width: 0;
+    max-width: none !important; // column already constrains width
+    width: 100% !important;
   }
 
-  // TOC in column 2: span full article height so sticky can track while scrolling.
-  // align-self:start + max-height keeps the panel viewport-sized; overscroll
-  // containment stops wheel events from feeling "stuck" on the TOC.
-  .layout--single .page__content > .sidebar__right,
-  .layout--single .page__content > .sidebar__right.sticky {
-    grid-column: 2 !important;
-    grid-row: 1 / -1;
+  .post-layout--with-toc .page__toc-desktop {
+    grid-column: 2;
+    grid-row: 1;
     position: sticky !important;
     top: 5rem;
     align-self: start;
     float: none !important;
-    clear: none !important;
     width: 100% !important;
     max-width: $toc-rail !important;
     margin: 0 !important;
-    margin-inline-end: 0 !important;
     padding: 0 !important;
-    inset: auto !important;
-    left: auto !important;
-    right: auto !important;
-    z-index: 5;
     height: fit-content;
     max-height: calc(100vh - 6rem);
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+    z-index: 5;
+    scrollbar-width: thin;
   }
 
-  .layout--single .page__content > .sidebar__right .toc,
-  .layout--single .page__content > .sidebar__right.sticky .toc {
+  .post-layout--with-toc .page__toc-desktop .toc {
     position: static !important;
     width: 100% !important;
-    max-height: none;
-    overflow: visible;
-    left: auto !important;
-  }
-
-  .layout--single .sidebar__right.sticky .toc .toc__menu {
-    max-height: none;
-    overflow: visible;
   }
 }
 
-// Hard guarantee: never lock document scroll from our layout
 html,
 body {
   overflow-y: auto !important;
   height: auto !important;
-  max-height: none !important;
-}
-
-body.layout--single .initial-content,
-body.layout--single #main,
-body.layout--single .page,
-body.layout--single .page__inner-wrap {
-  overflow: visible !important;
-  max-height: none !important;
-}
-
-// page__content must stay overflow:visible so sticky TOC is not trapped
-// in a zero-height / non-scrolling ancestor
-body.layout--single .page__content {
-  overflow: visible !important;
   max-height: none !important;
 }
 

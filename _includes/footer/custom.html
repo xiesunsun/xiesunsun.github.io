@@ -63,8 +63,8 @@
   }
 
   function initThemeToggle() {
-    var nav = document.querySelector(".greedy-nav");
-    var logo = document.querySelector(".greedy-nav .site-title") ||
+    var logo =
+      document.querySelector(".greedy-nav .site-title") ||
       document.querySelector(".masthead .site-title");
     if (!logo) return;
 
@@ -96,7 +96,6 @@
       } catch (e) {}
     }
 
-    // Avoid double-binding if script re-runs
     if (!btn.dataset.bound) {
       btn.dataset.bound = "1";
       btn.addEventListener("click", function () {
@@ -108,105 +107,170 @@
   }
 
   /**
-   * Scroll-spy for desktop TOC.
-   * Theme Gumshoe often fails when both mobile + desktop nav.toc exist;
-   * this only watches .page__toc-desktop and highlights the current section.
+   * Reading-progress TOC highlight.
+   * Uses IntersectionObserver on article headings; only drives #page-toc.
+   * Never calls scrollIntoView on the document.
    */
   function initTocSpy() {
-    var tocRoot = document.querySelector(".page__toc-desktop nav.toc");
-    if (!tocRoot || tocRoot.dataset.spyBound === "1") return;
+    var tocPanel = document.getElementById("page-toc");
+    if (!tocPanel || tocPanel.dataset.spyBound === "1") return;
+
+    var tocRoot = tocPanel.querySelector("nav.toc");
+    var content = document.querySelector(".post-layout .page__content") ||
+      document.querySelector(".page__content");
+    if (!tocRoot || !content) return;
 
     var links = Array.prototype.slice.call(
-      tocRoot.querySelectorAll(".toc__menu a[href^='#']")
+      tocRoot.querySelectorAll(".toc__menu a[href*='#']")
     );
     if (!links.length) return;
 
-    var headings = [];
-    links.forEach(function (link) {
-      var href = link.getAttribute("href") || "";
-      var id = href.charAt(0) === "#" ? href.slice(1) : "";
-      if (!id) return;
-      var el = null;
+    function resolveId(href) {
+      if (!href) return "";
+      var hash = href.indexOf("#") >= 0 ? href.split("#").pop() : href;
       try {
-        el = document.getElementById(id) || document.getElementById(decodeURIComponent(id));
+        return decodeURIComponent(hash);
       } catch (e) {
-        el = document.getElementById(id);
+        return hash;
       }
+    }
+
+    function findHeading(id) {
+      if (!id) return null;
+      var el = document.getElementById(id);
+      if (el) return el;
+      try {
+        el = document.getElementById(decodeURIComponent(id));
+      } catch (e) {}
+      if (el) return el;
+      // Fallback: match by text / existing ids inside content
+      var nodes = content.querySelectorAll("h2[id], h3[id], h4[id]");
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].id === id) return nodes[i];
+      }
+      return null;
+    }
+
+    var items = [];
+    links.forEach(function (link) {
+      var id = resolveId(link.getAttribute("href"));
+      var el = findHeading(id);
       if (el) {
-        headings.push({ el: el, id: el.id || id, link: link });
+        items.push({ id: el.id || id, el: el, link: link });
       }
     });
-    if (!headings.length) return;
+    if (!items.length) return;
 
-    tocRoot.dataset.spyBound = "1";
+    tocPanel.dataset.spyBound = "1";
     var lastId = null;
-    var topOffset = 96; // masthead + breathing room
 
     function clearActive() {
-      tocRoot.querySelectorAll(".toc__menu li.active, .toc__menu li.is-active").forEach(function (li) {
-        li.classList.remove("active", "is-active");
-      });
-      tocRoot.querySelectorAll(".toc__menu a.active, .toc__menu a.is-active").forEach(function (a) {
-        a.classList.remove("active", "is-active");
-      });
-    }
-
-    function scrollLinkIntoToc(link) {
-      // Only adjust the TOC panel's own scrollTop — never call
-      // element.scrollIntoView(), which can hijack window scrolling.
-      var panel =
-        document.querySelector(".page__toc-desktop.sidebar__right") ||
-        tocRoot.closest(".sidebar__right");
-      if (!panel || !link) return;
-      var panelRect = panel.getBoundingClientRect();
-      var linkRect = link.getBoundingClientRect();
-      var pad = 12;
-      if (linkRect.top < panelRect.top + pad) {
-        panel.scrollTop -= panelRect.top + pad - linkRect.top;
-      } else if (linkRect.bottom > panelRect.bottom - pad) {
-        panel.scrollTop += linkRect.bottom - (panelRect.bottom - pad);
+      var activeLis = tocRoot.querySelectorAll("li.active, li.is-active");
+      for (var i = 0; i < activeLis.length; i++) {
+        activeLis[i].classList.remove("active", "is-active");
+      }
+      var activeAs = tocRoot.querySelectorAll("a.active, a.is-active");
+      for (var j = 0; j < activeAs.length; j++) {
+        activeAs[j].classList.remove("active", "is-active");
       }
     }
 
-    function setActive(entry) {
-      if (!entry || entry.id === lastId) return;
-      lastId = entry.id;
+    function scrollTocPanel(link) {
+      if (!link || !tocPanel) return;
+      var pTop = tocPanel.scrollTop;
+      var pRect = tocPanel.getBoundingClientRect();
+      var lRect = link.getBoundingClientRect();
+      var pad = 16;
+      if (lRect.top < pRect.top + pad) {
+        tocPanel.scrollTop = pTop - (pRect.top + pad - lRect.top);
+      } else if (lRect.bottom > pRect.bottom - pad) {
+        tocPanel.scrollTop = pTop + (lRect.bottom - (pRect.bottom - pad));
+      }
+    }
+
+    function setActiveById(id) {
+      if (!id || id === lastId) return;
+      lastId = id;
       clearActive();
 
-      var link = entry.link;
-      link.classList.add("active", "is-active");
+      var entry = null;
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].id === id) {
+          entry = items[i];
+          break;
+        }
+      }
+      if (!entry) return;
 
-      var li = link.closest("li");
+      entry.link.classList.add("active", "is-active");
+      var li = entry.link.closest("li");
       while (li && tocRoot.contains(li)) {
         li.classList.add("active", "is-active");
-        var parentUl = li.parentElement;
-        li = parentUl && parentUl.closest ? parentUl.closest("li") : null;
+        var parent = li.parentElement;
+        li = parent ? parent.closest("li") : null;
       }
-
-      scrollLinkIntoToc(link);
+      scrollTocPanel(entry.link);
     }
 
-    function update() {
-      // Choose the last heading whose top has crossed the offset line
-      var current = headings[0];
-      for (var i = 0; i < headings.length; i++) {
-        var top = headings[i].el.getBoundingClientRect().top;
-        if (top - topOffset <= 0) {
-          current = headings[i];
+    // Primary: IntersectionObserver — heading enters the upper reading band
+    if ("IntersectionObserver" in window) {
+      var visible = new Map();
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) {
+              visible.set(en.target, en.boundingClientRect.top);
+            } else {
+              visible.delete(en.target);
+            }
+          });
+
+          if (visible.size === 0) {
+            // Fallback while between sections: pick last heading above the band
+            pickByScroll();
+            return;
+          }
+
+          // Prefer the topmost visible heading in the band
+          var best = null;
+          var bestTop = Infinity;
+          visible.forEach(function (top, el) {
+            var t = el.getBoundingClientRect().top;
+            if (t < bestTop) {
+              bestTop = t;
+              best = el;
+            }
+          });
+          if (best) setActiveById(best.id);
+        },
+        {
+          // Activate when heading sits in the upper portion of the viewport
+          root: null,
+          rootMargin: "-12% 0px -70% 0px",
+          threshold: [0, 0.1, 0.5, 1]
+        }
+      );
+
+      items.forEach(function (it) {
+        io.observe(it.el);
+      });
+    }
+
+    function pickByScroll() {
+      var offset = 100;
+      var current = items[0];
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].el.getBoundingClientRect().top - offset <= 0) {
+          current = items[i];
         } else {
           break;
         }
       }
-      // Near page bottom: force last section
-      var scrollBottom = window.innerHeight + window.pageYOffset;
-      var docHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-      if (docHeight - scrollBottom < 48) {
-        current = headings[headings.length - 1];
-      }
-      setActive(current);
+      var nearBottom =
+        window.innerHeight + window.pageYOffset >=
+        Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - 64;
+      if (nearBottom) current = items[items.length - 1];
+      if (current) setActiveById(current.id);
     }
 
     var ticking = false;
@@ -215,16 +279,15 @@
       ticking = true;
       window.requestAnimationFrame(function () {
         ticking = false;
-        update();
+        pickByScroll();
       });
     }
 
+    // Always keep scroll fallback (covers IO edge cases)
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
-    // Run after layout / images settle
-    update();
-    window.setTimeout(update, 200);
-    window.setTimeout(update, 800);
+    pickByScroll();
+    window.setTimeout(pickByScroll, 300);
   }
 
   function boot() {
