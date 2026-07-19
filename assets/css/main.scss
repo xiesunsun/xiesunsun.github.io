@@ -3,713 +3,827 @@
 @charset "utf-8";
 
 // ========================================
-// 导入莫兰迪主题和字体配置
+// Paper theme tokens + system fonts
 // ========================================
 
-@import "variables-morandi";
-@import "fonts-morandi";
+@import "variables-paper";
+@import "fonts-paper";
 
 // ========================================
-// 导入 Minimal Mistakes 核心样式
+// Minimal Mistakes core
 // ========================================
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
 @import "minimal-mistakes";
 
-// 在主题样式之后应用莫兰迪覆盖
-@import "morandi-theme";
+// Paper overrides after theme
+@import "paper-theme";
 
 // ========================================
-// 额外自定义调整
+// Site chrome
 // ========================================
 
-// Minimal Mistakes 容器宽度调整（可选）
 .page-wrapper {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 1em;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
-// 文章容器优化
-.page__content {
-    @include font-cn;
-    @include font-smoothing;
+.masthead {
+  background: var(--theme);
+  border-bottom: 1px solid var(--border);
+
+  .greedy-nav {
+    background: transparent;
+
+    a {
+      color: var(--primary);
+
+      &:hover {
+        color: var(--primary);
+        opacity: 0.8;
+      }
+    }
+
+    .visible-links a::before {
+      background: var(--primary);
+    }
+  }
 }
 
-// 站点标题与页脚的柔和定制
 .masthead .site-title {
-    font-family: "Snell Roundhand", "Apple Chancery", "Zapfino", "URW Chancery L", cursive;
-    font-size: 1.85rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    text-transform: lowercase;
-    color: $morandi-primary-dark;
+  @include font-sans;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--primary);
+
+  &:hover {
+    color: var(--primary);
+    opacity: 0.85;
+  }
+}
+
+.masthead__inner-wrap {
+  max-width: calc(var(--nav-width) + var(--gap) * 2);
+  margin-inline: auto;
+}
+
+// Theme toggle (injected next to site title)
+#theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  background: transparent;
+  border: 0;
+  color: var(--primary);
+  cursor: pointer;
+  margin-inline-start: 0.45rem;
+  padding: 0.25rem;
+  line-height: 1;
+  font-size: 1.05rem;
+  border-radius: 6px;
+
+  &:hover {
+    background: var(--code-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--tertiary);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    display: block;
+  }
+
+  .icon-sun {
+    display: none;
+  }
+
+  .icon-moon {
+    display: block;
+  }
+}
+
+html.dark #theme-toggle {
+  .icon-sun {
+    display: block;
+  }
+
+  .icon-moon {
+    display: none;
+  }
+}
+
+// ========================================
+// Home welcome
+// ========================================
+
+.home-welcome {
+  max-width: calc(var(--main-width) + var(--gap) * 2);
+  margin: calc(var(--gap) * 1.75) auto var(--gap);
+  padding: 0 var(--gap);
+  text-align: center;
+}
+
+.home-welcome__title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+  border: 0;
+  padding: 0;
+}
+
+.layout--home .page__title:empty,
+.layout--home #page-title:empty {
+  display: none;
+}
+
+.layout--home .archive__subtitle {
+  display: none;
+}
+
+// ========================================
+// List canvas + cards
+// ========================================
+
+body.layout--home,
+body.layout--posts,
+body.layout--categories,
+body.layout--tags,
+body.layout--category,
+body.layout--tag,
+body.layout--archive {
+  background: var(--code-bg);
+}
+
+.archive {
+  max-width: calc(var(--main-width) + var(--gap) * 2);
+  margin-inline: auto;
+  padding: var(--gap);
+}
+
+.archive__subtitle {
+  color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 0;
+  margin-bottom: 1rem;
+}
+
+.entries-list .list__item,
+.entries-list .archive__item,
+.archive .list__item,
+.archive .archive__item {
+  position: relative;
+  margin-bottom: var(--gap);
+  padding: var(--gap);
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform 0.1s ease, border-color 0.15s ease;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    border-color: var(--tertiary);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.archive__item-title {
+  font-size: 1.35rem;
+  line-height: 1.3;
+  margin: 0;
+  font-weight: 600;
+  color: var(--primary);
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    box-shadow: none;
+
+    // Full-card hit target
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
 
     &:hover {
-        color: $morandi-primary;
+      text-decoration: underline;
+      opacity: 1;
     }
+  }
 }
+
+.archive__item-excerpt {
+  margin: 0.5rem 0 0;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.page__meta {
+  position: relative;
+  z-index: 2;
+  color: var(--secondary);
+  font-size: 0.8125rem;
+  margin-top: 0.35rem;
+  margin-bottom: 0;
+
+  a {
+    color: var(--secondary);
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// ========================================
+// Footer
+// ========================================
 
 .page__footer {
-    margin-top: 3rem;
-    padding-top: 0;
-    background: linear-gradient(180deg, rgba($morandi-bg-light, 0.65) 0%, rgba($morandi-bg-secondary, 0.92) 100%);
-    border-top: 1px solid rgba($morandi-border, 0.85);
-    backdrop-filter: blur(6px);
-    @include font-cn;
+  margin-top: 0;
+  padding-top: 0;
+  background: var(--theme);
+  border-top: 1px solid var(--border);
+  @include font-sans;
 
-    footer {
-        max-width: none;
-        width: 100%;
-        margin: 0;
-        padding: 1.75rem 1rem 1.25rem;
+  footer {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 1.75rem 1rem 1.25rem;
+  }
+
+  .footer-minimal {
+    text-align: center;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__line {
+      margin: 0;
+      @include font-sans;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      color: var(--primary);
+      text-align: center;
     }
 
-    .footer-verse {
-        text-align: center;
-        color: $morandi-text-secondary;
-        margin-bottom: 1rem;
-
-        &__line {
-            margin: 0;
-            font-family: "STKaiti", "Kaiti SC", "KaiTi", "Songti SC", serif;
-            font-style: normal;
-            font-size: 1.02rem;
-            letter-spacing: 0.04em;
-            color: $morandi-primary;
-        }
-
-        &__meta {
-            margin: 0.4rem 0 0;
-            font-size: 0.92rem;
-        }
+    &__copy {
+      margin: 0.75rem 0 0;
+      font-size: 0.875rem;
+      color: var(--secondary);
+      text-align: center;
     }
+  }
 
-    .footer-minimal {
-        text-align: center;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        &__line {
-            margin: 0;
-            font-family: "STKaiti", "Kaiti SC", "KaiTi", "Songti SC", serif;
-            font-size: 1.06rem;
-            letter-spacing: 0.04em;
-            color: $morandi-text-primary;
-            text-align: center;
-        }
-
-        &__copy {
-            margin: 0.75rem 0 0;
-            font-size: 0.92rem;
-            color: $morandi-text-secondary;
-            text-align: center;
-        }
-    }
-
-    .page__footer-follow {
-        display: none;
-        padding-top: 0.4rem;
-        margin-top: 0;
-
-        .social-icons {
-            justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            font-size: 0.92rem;
-
-            li {
-                margin: 0;
-            }
-
-            a {
-                border-bottom: 1px solid transparent;
-                transition: color 0.2s ease, border-color 0.2s ease;
-
-                &:hover {
-                    border-bottom-color: currentColor;
-                    text-decoration: none;
-                }
-            }
-        }
-    }
-
-    .page__footer-copyright {
-        display: none;
-        text-align: center;
-        color: $morandi-text-secondary;
-        font-size: 0.88rem;
-        letter-spacing: 0.02em;
-
-        a {
-            color: $morandi-primary;
-        }
-    }
+  .page__footer-follow,
+  .page__footer-copyright {
+    display: none;
+  }
 }
 
-// 侧边栏样式
-.sidebar {
-    background-color: $morandi-bg-secondary;
-    border: 1px solid $morandi-border;
-    border-radius: 4px;
-    padding: 1.5em;
+// ========================================
+// Sidebar / TOC
+// ========================================
 
-    h3 {
-        color: $morandi-primary;
-        border-bottom: 2px solid $morandi-border;
-        padding-bottom: 0.5em;
-    }
+.sidebar {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+
+  h3 {
+    color: var(--secondary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5em;
+  }
 }
 
 .sidebar__right {
-    .toc {
-        border: 0;
-        border-left: 1px solid rgba($morandi-border, 0.7);
-        border-radius: 0;
+  .toc {
+    border: 0;
+    border-left: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+    padding: 0 0 0 1rem;
+    box-shadow: none;
+  }
+
+  .nav__title {
+    margin: 0 0 0.85rem;
+    padding: 0 0 0.45rem;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--secondary);
+    font-weight: 500;
+    word-break: break-word;
+    box-shadow: none;
+  }
+
+  .toc__menu {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0;
+      border: 0;
+    }
+
+    a {
+      position: relative;
+      display: block;
+      padding: 0.28rem 0 0.28rem 0.8rem;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      color: var(--secondary);
+      font-size: 0.89rem;
+      line-height: 1.65;
+      text-decoration: none;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.44rem;
+        bottom: 0.44rem;
+        width: 1.5px;
+        border-radius: 999px;
         background: transparent;
-        padding: 0 0 0 1rem;
-        box-shadow: none;
+      }
+
+      &:hover {
+        color: var(--primary);
+      }
     }
 
-    .nav__title {
-        margin: 0 0 0.85rem;
-        padding: 0 0 0.45rem;
-        border-bottom: 1px solid rgba($morandi-border, 0.55);
-        background: transparent;
-        font-size: 0.82rem;
-        line-height: 1.5;
-        color: $morandi-text-secondary;
-        font-weight: 500;
-        word-break: break-word;
-        box-shadow: none;
+    ul {
+      margin: 0.08rem 0 0.16rem;
+      padding-left: 0.65rem;
+
+      a {
+        font-size: 0.83rem;
+        color: var(--secondary);
+      }
     }
 
-    .toc__menu {
-        margin: 0;
-        padding: 0;
+    > li.active > a,
+    li.active > a {
+      color: var(--primary);
+      font-weight: 600;
 
-        li {
-            list-style: none;
-            margin: 0;
-            border: 0;
-        }
-
-        a {
-            position: relative;
-            display: block;
-            padding: 0.28rem 0 0.28rem 0.8rem;
-            border: 0;
-            background: transparent;
-            box-shadow: none;
-            color: $morandi-text-secondary;
-            font-size: 0.89rem;
-            line-height: 1.65;
-            text-decoration: none;
-            transition: color 0.18s ease;
-
-            &::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: 0.44rem;
-                bottom: 0.44rem;
-                width: 1.5px;
-                border-radius: 999px;
-                background: transparent;
-                transition: background-color 0.18s ease;
-            }
-
-            &:hover {
-                color: $morandi-primary;
-            }
-        }
-
-        ul {
-            margin: 0.08rem 0 0.16rem;
-            padding-left: 0.65rem;
-
-            a {
-                font-size: 0.83rem;
-                color: rgba($morandi-text-secondary, 0.9);
-            }
-        }
-
-        > li.active > a,
-        li.active > a {
-            color: $morandi-primary-dark;
-            font-weight: 600;
-
-            &::before {
-                background: rgba($morandi-primary, 0.95);
-            }
-        }
-
-        > li.active > ul > li > a {
-            color: $morandi-text-primary;
-        }
-
-        > li.active > ul > li.active > a {
-            color: $morandi-primary-dark;
-        }
+      &::before {
+        background: var(--primary);
+      }
     }
+  }
 }
 
 .page__toc-mobile {
-    margin-bottom: 1.35rem;
+  margin-bottom: 1.35rem;
 }
 
 .page__toc-panel {
-    display: block;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    overflow: visible;
+  display: block;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
 }
 
 .page__toc-summary {
-    display: none !important;
-}
+  display: none !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+  color: var(--primary);
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.96rem;
+  font-weight: 600;
 
-@media (max-width: 768px) {
-    .page__toc-mobile {
-        margin-bottom: 1.35rem;
-    }
+  &::-webkit-details-marker {
+    display: none;
+  }
 
-    .page__toc-panel {
-        border: 1px solid rgba($morandi-border, 0.9);
-        border-radius: 18px;
-        background: rgba($morandi-white, 0.78);
-        box-shadow: 0 10px 24px rgba($morandi-primary-dark, 0.05);
-        overflow: hidden;
-    }
-
-    .page__toc-summary {
-        display: flex !important;
-    }
-}
-
-.page__toc-summary {
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    min-height: 3rem;
-    padding: 0.85rem 1rem;
-    color: $morandi-primary-dark;
-    cursor: pointer;
-    list-style: none;
-    font-size: 0.96rem;
-    font-weight: 600;
-
-    &::-webkit-details-marker {
-        display: none;
-    }
-
-    &::after {
-        content: "展开";
-        color: $morandi-text-secondary;
-        font-size: 0.82rem;
-        font-weight: 500;
-    }
+  &::after {
+    content: "展开";
+    color: var(--secondary);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
 }
 
 .page__toc-panel[open] .page__toc-summary {
-    border-bottom: 1px solid rgba($morandi-border, 0.8);
+  border-bottom: 1px solid var(--border);
 
-    &::after {
-        content: "收起";
-    }
+  &::after {
+    content: "收起";
+  }
 }
 
 .back-to-top {
-    position: fixed;
-    right: max(1.6rem, calc((100vw - 1000px) / 2 + 4.6rem));
-    bottom: 1.6rem;
-    z-index: 30;
-    width: 2.7rem;
-    height: 2.7rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba($morandi-border, 0.9);
-    border-radius: 999px;
-    background: rgba($morandi-white, 0.82);
-    box-shadow: 0 10px 24px rgba($morandi-primary-dark, 0.08);
-    color: $morandi-primary-dark;
-    font-size: 1rem;
-    line-height: 1;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    backdrop-filter: blur(8px);
+  position: fixed;
+  right: max(1.6rem, calc((100vw - var(--main-width)) / 2 - 3.5rem));
+  bottom: 1.6rem;
+  z-index: 30;
+  width: 2.7rem;
+  height: 2.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--entry);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 
-    &:hover {
-        color: $morandi-primary;
-        border-color: rgba($morandi-primary, 0.45);
-    }
+  &:hover {
+    border-color: var(--tertiary);
+  }
 
-    &:focus-visible {
-        outline: 2px solid rgba($morandi-primary, 0.3);
-        outline-offset: 2px;
-    }
+  &:focus-visible {
+    outline: 2px solid var(--tertiary);
+    outline-offset: 2px;
+  }
 
-    &.is-visible {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
 
-@media (max-width: 768px) {
-    .page__toc-mobile .toc {
-        padding: 0.55rem 1rem 0.9rem;
-    }
+// ========================================
+// Single post
+// ========================================
 
-    .page__toc-mobile .page__toc-panel:not([open]) .toc {
-        display: none;
-    }
-
-    .page__toc-desktop {
-        display: none !important;
-        height: 0 !important;
-        margin: 0 !important;
-        overflow: hidden !important;
-        pointer-events: none !important;
-    }
-
-    .page__content {
-        max-width: none;
-        font-size: 1rem;
-        line-height: 1.82;
-    }
-
-    .page__title {
-        margin-bottom: 0.5rem;
-        line-height: 1.08;
-    }
-
-    .page__meta {
-        margin-bottom: 1rem;
-    }
-
-    .back-to-top {
-        right: calc(1rem + env(safe-area-inset-right, 0px));
-        bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-        width: 2.5rem;
-        height: 2.5rem;
-    }
+.layout--single #main {
+  max-width: calc(var(--main-width) + 280px);
+  margin-inline: auto;
 }
 
-@media (min-width: 769px) {
-    .page__toc-mobile {
-        display: none !important;
-    }
+.layout--single .page {
+  max-width: var(--main-width);
+}
 
-    .page__toc-desktop {
-        display: block;
-    }
+.page__title {
+  color: var(--primary);
 }
 
 .archive-page {
-    .page__title,
-    .page__title a {
-        color: $morandi-primary-dark;
-    }
-
-    .page__title a:hover {
-        color: $morandi-primary;
-    }
+  .page__title,
+  .page__title a {
+    color: var(--primary);
+  }
 }
 
-// 标签和分类样式
 .page__taxonomy {
-    margin-bottom: 2em;
+  margin-bottom: 2em;
 
-    .page__taxonomy-item {
-        display: inline-block;
-        margin: 0.25em 0.5em 0.25em 0;
-        padding: 0.35em 0.75em;
-        background-color: $morandi-bg-secondary;
-        border: 1px solid $morandi-border;
-        border-radius: 20px;
-        color: $morandi-primary;
-        font-size: 0.9em;
-        transition: all 0.3s ease;
+  .page__taxonomy-item {
+    display: inline-block;
+    margin: 0.25em 0.5em 0.25em 0;
+    padding: 0.3em 0.7em;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--secondary);
+    font-size: 0.85em;
+    transition: border-color 0.15s ease, color 0.15s ease;
 
-        &:hover {
-            background-color: $morandi-primary;
-            color: $morandi-white;
-            border-color: $morandi-primary;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-    }
-}
-
-// 归档页面样式
-.archive__item {
-    margin-bottom: 1.5em;
-    padding-bottom: 1em;
-    border-bottom: 1px solid $morandi-border;
-
-    &:last-child {
-        border-bottom: none;
-    }
-
-    .archive__item-title {
-        color: $morandi-primary;
-        font-weight: 600;
-
-        a {
-            color: $morandi-primary;
-            text-decoration: none;
-
-            &:hover {
-                color: $morandi-link-hover;
-            }
-        }
-    }
-
-    .archive__item-excerpt {
-        color: $morandi-text-secondary;
-        margin-top: 0.5em;
-    }
-}
-
-// 搜索框样式
-.search-input {
-    background-color: $morandi-bg-secondary;
-    border: 1px solid $morandi-border;
-    color: $morandi-text-primary;
-    padding: 0.5em 0.75em;
-    border-radius: 4px;
-
-    &::placeholder {
-        color: $morandi-text-secondary;
-    }
-
-    &:focus {
-        outline: none;
-        border-color: $morandi-primary;
-        box-shadow: 0 0 0 3px rgba($morandi-primary, 0.1);
-    }
-}
-
-// 评论区域
-.comments {
-    margin-top: 3em;
-    padding-top: 2em;
-    border-top: 2px solid $morandi-border;
-}
-
-// 打印样式
-@media print {
-    body {
-        background-color: white;
-        color: $morandi-text-primary;
+    &:hover {
+      background: var(--entry);
+      color: var(--primary);
+      border-color: var(--tertiary);
     }
 
     a {
-        color: $morandi-link;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: none;
     }
-
-    code {
-        background-color: $morandi-bg-secondary;
-    }
+  }
 }
 
-// About 页面定制
+.search-input {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  padding: 0.5em 0.75em;
+  border-radius: var(--radius);
+
+  &::placeholder {
+    color: var(--secondary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--tertiary);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.comments {
+  margin-top: 3em;
+  padding-top: 2em;
+  border-top: 1px solid var(--border);
+}
+
+// ========================================
+// About page
+// ========================================
+
 .about-card-page {
-    max-width: 760px;
-    margin: 2.75rem auto 5rem;
-    padding: 0 1rem;
+  max-width: var(--main-width);
+  margin: 2.75rem auto 5rem;
+  padding: 0 1rem;
 }
 
 .about-preface {
-    position: relative;
-    padding: 0 0 0 1.4rem;
-    border-left: 1px solid rgba($morandi-border, 0.9);
+  position: relative;
+  padding: 0 0 0 1.25rem;
+  border-left: 1px solid var(--border);
 }
 
 .about-preface__header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 10rem;
-    gap: 1.5rem;
-    align-items: end;
-    margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 10rem;
+  gap: 1.5rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
 }
 
 .about-preface__eyebrow {
-    margin: 0 0 0.45rem;
-    font-size: 0.74rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: $morandi-text-secondary;
+  margin: 0 0 0.45rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--secondary);
 }
 
 .about-preface__name {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: clamp(2.6rem, 8vw, 4.6rem);
-    line-height: 0.98;
-    font-weight: 500;
-    color: $morandi-primary-dark;
-    letter-spacing: 0.02em;
-    font-family: "Snell Roundhand", "Apple Chancery", "Zapfino", "URW Chancery L", cursive;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: clamp(2.2rem, 6vw, 3.25rem);
+  line-height: 1.05;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0;
+  @include font-sans;
 }
 
 .about-preface__meta {
-    margin: 0 0 0.4rem;
-    color: $morandi-text-secondary;
-    font-size: 0.92rem;
-    line-height: 1.8;
-    text-align: right;
+  margin: 0 0 0.4rem;
+  color: var(--secondary);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  text-align: right;
 
-    span {
-        display: block;
-    }
+  span {
+    display: block;
+  }
 }
 
 .about-preface__epigraph {
-    margin: 0 0 2rem;
-    color: $morandi-primary;
-    font-size: 1rem;
-    line-height: 1.8;
-    font-style: italic;
+  margin: 0 0 1.75rem;
+  color: var(--secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  font-style: italic;
 }
 
 .about-preface__body {
-    max-width: 34rem;
+  max-width: 34rem;
 
-    p {
-        margin: 0;
-        color: $morandi-text-primary;
-        font-size: 1.05rem;
-        line-height: 2.02;
-        text-indent: 2em;
-    }
+  p {
+    margin: 0;
+    color: var(--content);
+    font-size: 1rem;
+    line-height: 1.75;
+    text-indent: 0;
+  }
 
-    p + p {
-        margin-top: 1rem;
-    }
+  p + p {
+    margin-top: 1rem;
+  }
 }
 
 .about-preface__note {
-    margin: 2.2rem 0 0;
-    color: $morandi-text-secondary;
-    font-size: 0.95rem;
-    line-height: 1.8;
+  margin: 2rem 0 0;
+  color: var(--secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
 
-    a {
-        color: $morandi-primary;
-        border-bottom: 1px solid rgba($morandi-primary, 0.35);
-        text-decoration: none;
+  a {
+    color: var(--primary);
+    box-shadow: 0 1px 0 var(--primary);
+    text-decoration: none;
 
-        &:hover {
-            color: $morandi-link-hover;
-            border-bottom-color: currentColor;
-        }
+    &:hover {
+      box-shadow: 0 2px 0 var(--primary);
     }
+  }
+}
+
+// ========================================
+// Responsive
+// ========================================
+
+@media (max-width: 768px) {
+  .page__toc-mobile {
+    margin-bottom: 1.35rem;
+  }
+
+  .page__toc-panel {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--entry);
+    overflow: hidden;
+  }
+
+  .page__toc-summary {
+    display: flex !important;
+  }
+
+  .page__toc-mobile .toc {
+    padding: 0.55rem 1rem 0.9rem;
+  }
+
+  .page__toc-mobile .page__toc-panel:not([open]) .toc {
+    display: none;
+  }
+
+  .page__toc-desktop {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .page__content {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .page__title {
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .page__meta {
+    margin-bottom: 1rem;
+  }
+
+  .back-to-top {
+    right: calc(1rem + env(safe-area-inset-right, 0px));
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .about-card-page {
+    margin-top: 1.75rem;
+    padding: 0 0.65rem;
+  }
+
+  .about-preface {
+    padding-left: 1rem;
+  }
+
+  .about-preface__header {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .about-preface__meta {
+    text-align: left;
+    margin-bottom: 0;
+  }
+
+  .about-preface__body {
+    max-width: none;
+  }
+
+  .home-welcome__title {
+    font-size: 1.45rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .page__toc-mobile {
+    display: none !important;
+  }
+
+  .page__toc-desktop {
+    display: block;
+  }
 }
 
 @media (max-width: 480px) {
-    .masthead__inner-wrap {
-        padding-inline: 0.75rem;
-    }
+  .masthead__inner-wrap {
+    padding-inline: 0.75rem;
+  }
 
-    .greedy-nav a {
-        margin: 0 0.35rem;
-        min-height: 2.75rem;
-        display: inline-flex;
-        align-items: center;
-        font-size: 0.94rem;
-    }
+  .greedy-nav a {
+    margin: 0 0.35rem;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.94rem;
+  }
 
-    .greedy-nav a.site-title {
-        margin-inline-start: 0;
-        margin-inline-end: 0.75rem;
-    }
+  .greedy-nav a.site-title {
+    margin-inline-start: 0;
+    margin-inline-end: 0.35rem;
+  }
 
-    .greedy-nav__toggle {
-        min-width: 2.75rem;
-        height: 2.75rem;
-        margin-inline-start: 0.35rem;
-    }
+  .greedy-nav__toggle {
+    min-width: 2.75rem;
+    height: 2.75rem;
+    margin-inline-start: 0.35rem;
+  }
 
-    .greedy-nav .hidden-links {
-        min-width: 11rem;
-    }
+  .greedy-nav .hidden-links {
+    min-width: 11rem;
+  }
 
-    .greedy-nav .hidden-links a {
-        min-height: 2.75rem;
-        display: flex;
-        align-items: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .about-card-page {
-        margin-top: 1.75rem;
-        padding: 0 0.65rem;
-    }
-
-    .about-preface {
-        padding-left: 1rem;
-    }
-
-    .about-preface__header {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-
-    .about-preface__meta {
-        text-align: left;
-        margin-bottom: 0;
-    }
-
-    .about-preface__body {
-        max-width: none;
-    }
-
-    .about-preface__body p {
-        font-size: 1rem;
-        line-height: 1.84;
-        text-indent: 0;
-    }
-
-    .about-preface__epigraph {
-        margin-bottom: 1.4rem;
-    }
-
-    .about-preface__note {
-        margin-top: 1.8rem;
-        font-size: 0.92rem;
-    }
+  .greedy-nav .hidden-links a {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+  }
 }
 
 @media (max-width: 360px) {
-    .masthead .site-title {
-        font-size: 1.65rem;
-    }
+  .masthead .site-title {
+    font-size: 1.25rem;
+  }
 
-    .greedy-nav a {
-        font-size: 0.9rem;
-    }
+  .greedy-nav a {
+    font-size: 0.9rem;
+  }
 
-    .about-card-page {
-        padding: 0 0.5rem;
-    }
+  .about-card-page {
+    padding: 0 0.5rem;
+  }
 
-    .about-preface {
-        padding-left: 0.85rem;
-    }
+  .about-preface {
+    padding-left: 0.85rem;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  a {
+    color: black;
+  }
+
+  code {
+    background: #f5f5f5;
+  }
 }

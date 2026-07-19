@@ -1,0 +1,293 @@
+// ========================================
+// Paper theme — Lil'Log / PaperMod-aligned
+// ========================================
+
+@import "variables-paper";
+@import "fonts-paper";
+
+html {
+  font-size: $base-font-size;
+}
+
+body {
+  @include font-sans;
+  @include font-smoothing;
+  background: var(--theme);
+  color: var(--content);
+  line-height: $base-line-height;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @include font-sans;
+  color: var(--primary);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.25em;
+  margin-bottom: 0.6em;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+h1 {
+  font-size: $h1-size;
+}
+
+h2 {
+  font-size: $h2-size;
+}
+
+h3 {
+  font-size: $h3-size;
+}
+
+h4 {
+  font-size: $h4-size;
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &:visited {
+    color: var(--secondary);
+  }
+}
+
+code {
+  @include font-mono;
+  background: var(--code-bg);
+  color: var(--primary);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: $code-font-size;
+}
+
+pre {
+  @include font-mono;
+  background: var(--hljs-bg) !important;
+  color: #d5d5d6;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 1em;
+  overflow-x: auto;
+  line-height: $code-line-height;
+  font-size: 0.9em;
+
+  code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+  }
+}
+
+div.highlighter-rouge,
+figure.highlight {
+  background: var(--hljs-bg);
+  color: #d5d5d6;
+  border: 0;
+  border-radius: var(--radius);
+}
+
+.page__content {
+  color: var(--content);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: var(--main-width);
+
+  a {
+    color: var(--primary);
+    box-shadow: 0 1px 0 var(--primary);
+    text-decoration: none;
+
+    &:hover {
+      box-shadow: 0 2px 0 var(--primary);
+      opacity: 1;
+    }
+
+    &:visited {
+      color: var(--secondary);
+      box-shadow: 0 1px 0 var(--secondary);
+    }
+  }
+
+  :not(pre) > code {
+    background: var(--code-bg);
+    color: var(--primary);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--primary);
+  }
+}
+
+blockquote {
+  border-left: 3px solid var(--tertiary);
+  padding: 0.35em 0 0.35em 1em;
+  margin: 0 0 1em;
+  color: var(--secondary);
+  font-style: italic;
+  background: transparent;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1.5em;
+  font-size: 0.9em;
+
+  th,
+  td {
+    padding: 0.5em 0.4em;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+
+  th {
+    color: var(--primary);
+    font-weight: 600;
+  }
+}
+
+strong,
+b {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+em,
+i {
+  font-style: italic;
+  color: inherit;
+}
+
+.notice {
+  padding: 0.65em 1em;
+  border-radius: var(--radius);
+  border-left: 3px solid var(--primary);
+  background: var(--code-bg);
+  margin-bottom: 1em;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  margin: 2em 0;
+
+  a,
+  span {
+    padding: 0.4em 0.75em;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--primary);
+    background: var(--entry);
+
+    &.current {
+      background: var(--primary);
+      color: var(--theme);
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+  }
+}
+
+// Syntax highlight (neutral on dark panel)
+.page__content .highlight {
+  .c,
+  .cm,
+  .c1,
+  .cs {
+    color: #8b949e !important;
+    font-style: italic;
+  }
+
+  .k,
+  .kc,
+  .kd,
+  .kn,
+  .kp,
+  .kr,
+  .nt {
+    color: #ff7b72 !important;
+    font-weight: 600;
+  }
+
+  .s,
+  .s1,
+  .s2,
+  .sb,
+  .sc,
+  .sd,
+  .se,
+  .sh,
+  .si,
+  .sx {
+    color: #a5d6ff !important;
+  }
+
+  .m,
+  .mf,
+  .mh,
+  .mi,
+  .il,
+  .mo {
+    color: #79c0ff !important;
+  }
+
+  .na,
+  .nc,
+  .nv,
+  .nx,
+  .nf {
+    color: #d2a8ff !important;
+  }
+
+  .o,
+  .ow,
+  .p,
+  .w,
+  .n,
+  .nl,
+  .nn,
+  .nb {
+    color: #e6edf3 !important;
+  }
+
+  .err {
+    color: #ff7b72 !important;
+    background: rgba(248, 81, 73, 0.15);
+  }
+}

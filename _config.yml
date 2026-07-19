@@ -1,7 +1,7 @@
-title: sunxie
-name: sunxie
+title: "xie'blog"
+name: "xie'blog"
 description: >-
-  欢迎来到我的空间
+  写字的人，在灯下。
 baseurl: ""
 url: "https://blog.sunxie.me"
 remote_theme: "mmistakes/minimal-mistakes"
@@ -15,7 +15,7 @@ include:
   - .well-known
 
 # ========================================
-# 莫兰迪风格主题配置
+# Paper theme (Lil'Log-aligned grayscale)
 # ========================================
 
 # SASS 编译配置
@@ -24,7 +24,7 @@ sass:
   style: compressed
 
 # 自定义样式覆盖
-custom_theme: morandi          # 莫兰迪风格主题
+custom_theme: paper
 
 # 站点作者信息（用于 Minimal Mistakes 侧边作者卡片）
 author:

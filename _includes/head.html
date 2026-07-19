@@ -18,6 +18,15 @@
 
 <script>
   document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  (function () {
+    try {
+      var pref = localStorage.getItem('pref-theme');
+      var dark =
+        pref === 'dark' ||
+        (pref !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (dark) document.documentElement.classList.add('dark');
+    } catch (e) {}
+  })();
 </script>
 
 <!-- For all browsers -->

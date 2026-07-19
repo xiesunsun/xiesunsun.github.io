@@ -1,0 +1,67 @@
+// Paper / Lil'Log-aligned tokens
+
+// SCSS bridges
+$paper-theme: rgb(255, 255, 255) !default;
+$paper-entry: rgb(255, 255, 255) !default;
+$paper-primary: rgb(30, 30, 30) !default;
+$paper-secondary: rgb(108, 108, 108) !default;
+$paper-content: rgb(31, 31, 31) !default;
+$paper-border: rgb(238, 238, 238) !default;
+$paper-code-bg: rgb(245, 245, 245) !default;
+$paper-tertiary: rgb(214, 214, 214) !default;
+$paper-hljs-bg: rgb(28, 29, 33) !default;
+
+// Layout
+$paper-main-width: 720px !default;
+$paper-nav-width: 1024px !default;
+$paper-gap: 24px !default;
+$paper-radius: 8px !default;
+$paper-header-height: 60px !default;
+
+// Override Minimal Mistakes color variables
+$background-color: $paper-theme !default;
+$text-color: $paper-content !default;
+$muted-text-color: $paper-secondary !default;
+$border-color: $paper-border !default;
+$primary-color: $paper-primary !default;
+$success-color: #4a7c59 !default;
+$warning-color: #9a7b4f !default;
+$danger-color: #a33939 !default;
+$info-color: $paper-secondary !default;
+
+$link-color: $paper-primary !default;
+$link-color-hover: $paper-primary !default;
+$link-color-visited: $paper-secondary !default;
+
+$code-background-color: $paper-code-bg !default;
+$code-background-color-dark: $paper-hljs-bg !default;
+
+// CSS custom properties (light default; dark via html.dark)
+:root {
+  --theme: rgb(255, 255, 255);
+  --entry: rgb(255, 255, 255);
+  --primary: rgb(30, 30, 30);
+  --secondary: rgb(108, 108, 108);
+  --content: rgb(31, 31, 31);
+  --border: rgb(238, 238, 238);
+  --code-bg: rgb(245, 245, 245);
+  --tertiary: rgb(214, 214, 214);
+  --hljs-bg: rgb(28, 29, 33);
+  --main-width: 720px;
+  --nav-width: 1024px;
+  --gap: 24px;
+  --radius: 8px;
+  --header-height: 60px;
+}
+
+html.dark {
+  --theme: rgb(29, 30, 32);
+  --entry: rgb(46, 46, 51);
+  --primary: rgb(218, 218, 219);
+  --secondary: rgb(155, 156, 157);
+  --content: rgb(196, 196, 197);
+  --border: rgb(51, 51, 51);
+  --code-bg: rgb(55, 56, 62);
+  --tertiary: rgb(65, 66, 68);
+  --hljs-bg: rgb(46, 46, 51);
+}
