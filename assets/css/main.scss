@@ -378,38 +378,142 @@ body.layout--archive {
 }
 
 // ========================================
-// Sidebar / TOC
+// Article page: simple prose + sticky TOC
 // ========================================
+// Principle: body text is normal document flow. TOC sits beside it.
+// Do NOT grid the children of .page__content.
+
+$toc-w: 240px;
+$read-w: 720px;
+$article-gap: 28px;
+$article-shell: calc(#{$read-w} + #{$article-gap} + #{$toc-w});
 
 .sidebar {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
+  display: none !important; // unused author rail
+}
+
+// ---- shell: kill MM float/side padding that pushes content left ----
+.layout--single #main {
+  float: none !important;
+  width: 100% !important;
+  max-width: calc(#{$article-shell} + 48px) !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  clear: both !important;
+}
+
+.layout--single .page,
+.layout--single .page__inner-wrap {
+  float: none !important;
+  width: 100% !important;
+  max-width: $article-shell !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  clear: both !important;
+}
+
+.layout--single .page__inner-wrap > header,
+.layout--single .page__toc-mobile,
+.layout--single .page__inner-wrap > footer.page__meta,
+.layout--single .page__inner-wrap > .pagination {
+  max-width: $read-w;
+}
+
+.page__title {
+  color: var(--primary);
+  @include font-sans;
+  font-weight: 700;
+  line-height: 1.35;
+  font-size: clamp(1.6rem, 2.5vw, 2rem);
+  margin: 0 0 0.5rem;
+}
+
+// ---- two-column wrapper: only 2 children (content + toc) ----
+.post-layout {
+  width: 100%;
+  max-width: $article-shell;
+}
+
+.post-layout--with-toc {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: $article-gap;
+}
+
+// ---- prose ----
+.layout--single .page__content {
+  display: block !important;
+  float: none !important;
+  flex: 1 1 $read-w;
+  width: auto !important;
+  max-width: $read-w !important;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  @include font-sans;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--content);
+
+  p {
+    margin: 0 0 1.2em;
+  }
+
+  h2 {
+    margin: 2em 0 0.75em;
+    font-size: 1.35rem;
+    line-height: 1.35;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.35em;
+  }
 
   h3 {
-    color: var(--secondary);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.5em;
+    margin: 1.5em 0 0.6em;
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 1.2em;
+    padding-left: 1.4em;
+
+    li {
+      margin: 0.4em 0;
+    }
+  }
+
+  blockquote {
+    margin: 0 0 1.2em;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
-// TOC rail next to prose (prose itself is normal block flow, not a grid of <p>s)
-$toc-rail: 15rem;
-$toc-gap: 1.75rem;
-$article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
-
-.sidebar__right,
+// ---- TOC ----
 .page__toc-desktop {
-  margin-bottom: 0;
+  flex: 0 0 $toc-w;
+  width: $toc-w;
+  max-width: $toc-w;
+  position: sticky;
+  top: 5rem;
+  align-self: flex-start;
+  max-height: calc(100vh - 6rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding-left: 0.85rem;
+  border-left: 1px solid var(--border);
+  box-sizing: border-box;
 
   .toc {
-    border: 0;
-    border-left: 1px solid var(--border);
-    border-radius: 0;
-    background: transparent;
-    padding: 0 0 0 0.85rem;
-    box-shadow: none;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
   }
 
   .nav__title {
@@ -419,11 +523,7 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     background: transparent !important;
     color: var(--secondary) !important;
     font-size: 0.8rem;
-    line-height: 1.4;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    word-break: break-word;
-    box-shadow: none;
   }
 
   .toc__menu {
@@ -432,37 +532,24 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     list-style: none;
 
     li {
-      list-style: none;
       margin: 0;
-      border: 0;
+      list-style: none;
     }
 
     a {
-      position: relative;
       display: block;
-      padding: 0.35rem 0.4rem 0.35rem 0.85rem;
+      padding: 0.4rem 0.5rem;
+      margin: 0.1rem 0;
       border: 0 !important;
-      border-radius: 4px;
+      border-radius: 6px;
+      border-left: 2px solid transparent !important;
       background: transparent !important;
       box-shadow: none !important;
       color: var(--secondary);
-      font-size: 0.9rem;
-      line-height: 1.5;
+      font-size: 0.88rem;
+      line-height: 1.45;
       text-decoration: none;
       font-weight: 400;
-      transition: color 0.12s ease, background-color 0.12s ease;
-
-      &::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0.4rem;
-        bottom: 0.4rem;
-        width: 2px;
-        border-radius: 999px;
-        background: transparent;
-        transition: background-color 0.12s ease;
-      }
 
       &:hover {
         color: var(--primary);
@@ -471,56 +558,71 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
     }
 
     ul {
-      margin: 0.1rem 0 0.15rem;
-      padding-left: 0.55rem;
+      margin: 0;
+      padding: 0 0 0 0.65rem;
       list-style: none;
 
       a {
-        font-size: 0.84rem;
-        padding-top: 0.28rem;
-        padding-bottom: 0.28rem;
+        font-size: 0.82rem;
+        padding: 0.3rem 0.45rem;
       }
     }
 
-    // Current reading section
-    li.active > a,
+    // current section
     li.is-active > a,
-    a.active,
     a.is-active {
       color: var(--primary) !important;
       font-weight: 600 !important;
       background: var(--code-bg) !important;
-
-      &::before {
-        background: var(--primary) !important;
-      }
+      border-left-color: var(--primary) !important;
     }
   }
 }
 
+// mobile: stack; use collapsible TOC
+@media (max-width: 900px) {
+  .post-layout--with-toc {
+    display: block;
+  }
+
+  .page__toc-desktop {
+    display: none !important;
+  }
+
+  .layout--single .page__content {
+    max-width: 100% !important;
+  }
+
+  .layout--single .page,
+  .layout--single .page__inner-wrap,
+  .layout--single #main {
+    max-width: 100% !important;
+  }
+}
+
 .page__toc-mobile {
-  margin-bottom: 1.35rem;
+  margin: 0 0 1.25rem;
+  max-width: $read-w;
 }
 
 .page__toc-panel {
-  display: block;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  overflow: visible;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--entry);
+  overflow: hidden;
 }
 
 .page__toc-summary {
-  display: none !important;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  min-height: 3rem;
-  padding: 0.85rem 1rem;
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
   color: var(--primary);
   cursor: pointer;
   list-style: none;
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   font-weight: 600;
 
   &::-webkit-details-marker {
@@ -530,7 +632,7 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
   &::after {
     content: "展开";
     color: var(--secondary);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 500;
   }
 }
@@ -543,216 +645,65 @@ $article-shell: calc(var(--main-width) + #{$toc-gap} + #{$toc-rail});
   }
 }
 
+.page__toc-mobile .toc {
+  padding: 0.5rem 0.75rem 0.85rem;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.page__toc-mobile .toc__menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: block;
+    padding: 0.35rem 0.25rem;
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  ul {
+    padding-left: 0.85rem;
+    list-style: none;
+  }
+}
+
+@media (min-width: 901px) {
+  .page__toc-mobile {
+    display: none !important;
+  }
+}
+
 .back-to-top {
   position: fixed;
-  right: max(1.6rem, calc((100vw - var(--main-width)) / 2 - 3.5rem));
-  bottom: 1.6rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
   z-index: 30;
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.6rem;
+  height: 2.6rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--entry);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   color: var(--primary);
-  font-size: 1rem;
-  line-height: 1;
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
-  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-
-  &:hover {
-    border-color: var(--tertiary);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--tertiary);
-    outline-offset: 2px;
-  }
+  transition: opacity 0.2s ease;
 
   &.is-visible {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
   }
-}
-
-// ========================================
-// Single post — normal prose + optional TOC column
-// ========================================
-// Critical: NEVER put display:grid on .page__content itself — Jekyll dumps
-// every <p>/<h2>/<ul> as a direct child, and grid destroys reading layout.
-
-.layout--single #main {
-  float: none !important;
-  width: 100% !important;
-  max-width: calc(#{$article-shell} + var(--gap) * 2) !important;
-  margin-inline: auto !important;
-  padding-inline: var(--gap) !important;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.layout--single > .sidebar,
-.layout--single #main > .sidebar {
-  display: none !important;
-}
-
-.layout--single .page,
-.layout--single .page__inner-wrap {
-  float: none !important;
-  clear: both !important;
-  width: 100% !important;
-  max-width: $article-shell !important;
-  margin-inline: auto !important;
-  padding-inline: 0 !important;
-  padding-inline-end: 0 !important;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.layout--single .page__inner-wrap > header,
-.layout--single .page__toc-mobile,
-.layout--single .page__inner-wrap > .page__meta,
-.layout--single .page__inner-wrap > .pagination,
-.layout--single .page__inner-wrap > footer.page__meta {
-  max-width: var(--main-width);
-  width: 100%;
-  box-sizing: border-box;
-}
-
-// Wrapper: only two children (prose section + toc aside)
-.post-layout {
-  display: block;
-  width: 100%;
-  max-width: $article-shell;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-// Prose: classic document flow
-.layout--single .page__content {
-  display: block !important;
-  float: none !important;
-  clear: none !important;
-  width: 100% !important;
-  max-width: var(--main-width) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  position: relative;
-  @include font-sans;
-  font-size: 1rem;
-  line-height: 1.75;
-  color: var(--content);
-
-  > * {
-    // undo any accidental grid-column from older CSS
-    grid-column: auto !important;
-    max-width: 100%;
-  }
-
-  p {
-    margin: 0 0 1.15em;
-    line-height: 1.75;
-  }
-
-  h2,
-  h3,
-  h4 {
-    margin-top: 1.6em;
-    margin-bottom: 0.65em;
-    line-height: 1.35;
-    color: var(--primary);
-  }
-
-  ul,
-  ol {
-    margin: 0 0 1.15em;
-    padding-inline-start: 1.4em;
-
-    li {
-      margin: 0.35em 0;
-      line-height: 1.7;
-    }
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-// Desktop: prose | toc, centered as one unit
-@media (min-width: 64em) {
-  .layout--single .page,
-  .layout--single .page__inner-wrap {
-    float: none !important;
-    width: 100% !important;
-    max-width: $article-shell !important;
-    padding-inline-end: 0 !important;
-    margin-inline: auto !important;
-  }
-
-  .post-layout--with-toc {
-    display: grid !important;
-    grid-template-columns: minmax(0, var(--main-width)) $toc-rail;
-    column-gap: $toc-gap;
-    align-items: start;
-    width: 100%;
-    max-width: $article-shell;
-  }
-
-  .post-layout--with-toc .page__content {
-    grid-column: 1;
-    max-width: none !important; // column already constrains width
-    width: 100% !important;
-  }
-
-  .post-layout--with-toc .page__toc-desktop {
-    grid-column: 2;
-    grid-row: 1;
-    position: sticky !important;
-    top: 5rem;
-    align-self: start;
-    float: none !important;
-    width: 100% !important;
-    max-width: $toc-rail !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    height: fit-content;
-    max-height: calc(100vh - 6rem);
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    z-index: 5;
-    scrollbar-width: thin;
-  }
-
-  .post-layout--with-toc .page__toc-desktop .toc {
-    position: static !important;
-    width: 100% !important;
-  }
-}
-
-html,
-body {
-  overflow-y: auto !important;
-  height: auto !important;
-  max-height: none !important;
-}
-
-.page__title {
-  color: var(--primary);
-  @include font-sans;
-  font-weight: 700;
-  line-height: 1.35;
-  font-size: clamp(1.6rem, 2.5vw, 2rem);
 }
 
 .archive-page {
@@ -915,38 +866,7 @@ body {
 // Responsive
 // ========================================
 
-@media (max-width: 768px) {
-  .page__toc-mobile {
-    margin-bottom: 1.35rem;
-  }
-
-  .page__toc-panel {
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--entry);
-    overflow: hidden;
-  }
-
-  .page__toc-summary {
-    display: flex !important;
-  }
-
-  .page__toc-mobile .toc {
-    padding: 0.55rem 1rem 0.9rem;
-  }
-
-  .page__toc-mobile .page__toc-panel:not([open]) .toc {
-    display: none;
-  }
-
-  .page__toc-desktop {
-    display: none !important;
-    height: 0 !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    pointer-events: none !important;
-  }
-
+@media (max-width: 900px) {
   .page__content {
     max-width: none;
     font-size: 1rem;
@@ -994,16 +914,6 @@ body {
 
   .home-welcome__title {
     font-size: 1.45rem;
-  }
-}
-
-@media (min-width: 769px) {
-  .page__toc-mobile {
-    display: none !important;
-  }
-
-  .page__toc-desktop {
-    display: block;
   }
 }
 

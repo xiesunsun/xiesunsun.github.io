@@ -8,7 +8,9 @@
     var toggle = nav.querySelector(".greedy-nav__toggle");
     if (!visibleLinks || !hiddenLinks || !toggle) return;
 
-    var originalItems = Array.from(visibleLinks.children).concat(Array.from(hiddenLinks.children));
+    var originalItems = Array.from(visibleLinks.children).concat(
+      Array.from(hiddenLinks.children)
+    );
     if (!originalItems.length) return;
 
     var narrowQuery = window.matchMedia("(max-width: 480px)");
@@ -78,10 +80,7 @@
       btn.innerHTML =
         '<svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>' +
         '<svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
-
-      if (logo.parentElement) {
-        logo.insertAdjacentElement("afterend", btn);
-      }
+      logo.insertAdjacentElement("afterend", btn);
     }
 
     function isDark() {
@@ -102,192 +101,99 @@
         apply(!isDark());
       });
     }
-
     apply(isDark());
   }
 
-  /**
-   * Reading-progress TOC highlight.
-   * Uses IntersectionObserver on article headings; only drives #page-toc.
-   * Never calls scrollIntoView on the document.
-   */
+  // Simple reading progress for desktop TOC.
+  // Rule: the last heading that has scrolled past the top offset is active.
   function initTocSpy() {
-    var tocPanel = document.getElementById("page-toc");
-    if (!tocPanel || tocPanel.dataset.spyBound === "1") return;
+    var toc = document.getElementById("page-toc");
+    if (!toc || toc.dataset.ready === "1") return;
 
-    var tocRoot = tocPanel.querySelector("nav.toc");
-    var content = document.querySelector(".post-layout .page__content") ||
-      document.querySelector(".page__content");
-    if (!tocRoot || !content) return;
-
-    var links = Array.prototype.slice.call(
-      tocRoot.querySelectorAll(".toc__menu a[href*='#']")
-    );
+    var links = toc.querySelectorAll(".toc__menu a[href*='#']");
     if (!links.length) return;
 
-    function resolveId(href) {
-      if (!href) return "";
-      var hash = href.indexOf("#") >= 0 ? href.split("#").pop() : href;
+    var pairs = [];
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      var raw = (link.getAttribute("href") || "").split("#")[1] || "";
+      var id = raw;
       try {
-        return decodeURIComponent(hash);
-      } catch (e) {
-        return hash;
-      }
-    }
-
-    function findHeading(id) {
-      if (!id) return null;
-      var el = document.getElementById(id);
-      if (el) return el;
-      try {
-        el = document.getElementById(decodeURIComponent(id));
+        id = decodeURIComponent(raw);
       } catch (e) {}
-      if (el) return el;
-      // Fallback: match by text / existing ids inside content
-      var nodes = content.querySelectorAll("h2[id], h3[id], h4[id]");
+      var el = document.getElementById(id);
+      if (!el && raw) {
+        try {
+          el = document.getElementById(decodeURIComponent(raw));
+        } catch (e2) {}
+      }
+      if (el) pairs.push({ el: el, link: link });
+    }
+    if (!pairs.length) return;
+
+    toc.dataset.ready = "1";
+    var last = "";
+
+    function clear() {
+      var nodes = toc.querySelectorAll(".is-active");
       for (var i = 0; i < nodes.length; i++) {
-        if (nodes[i].id === id) return nodes[i];
-      }
-      return null;
-    }
-
-    var items = [];
-    links.forEach(function (link) {
-      var id = resolveId(link.getAttribute("href"));
-      var el = findHeading(id);
-      if (el) {
-        items.push({ id: el.id || id, el: el, link: link });
-      }
-    });
-    if (!items.length) return;
-
-    tocPanel.dataset.spyBound = "1";
-    var lastId = null;
-
-    function clearActive() {
-      var activeLis = tocRoot.querySelectorAll("li.active, li.is-active");
-      for (var i = 0; i < activeLis.length; i++) {
-        activeLis[i].classList.remove("active", "is-active");
-      }
-      var activeAs = tocRoot.querySelectorAll("a.active, a.is-active");
-      for (var j = 0; j < activeAs.length; j++) {
-        activeAs[j].classList.remove("active", "is-active");
+        nodes[i].classList.remove("is-active", "active");
       }
     }
 
-    function scrollTocPanel(link) {
-      if (!link || !tocPanel) return;
-      var pTop = tocPanel.scrollTop;
-      var pRect = tocPanel.getBoundingClientRect();
-      var lRect = link.getBoundingClientRect();
-      var pad = 16;
-      if (lRect.top < pRect.top + pad) {
-        tocPanel.scrollTop = pTop - (pRect.top + pad - lRect.top);
-      } else if (lRect.bottom > pRect.bottom - pad) {
-        tocPanel.scrollTop = pTop + (lRect.bottom - (pRect.bottom - pad));
+    function activate(pair) {
+      if (!pair || pair.el.id === last) return;
+      last = pair.el.id;
+      clear();
+      pair.link.classList.add("is-active", "active");
+      var li = pair.link.parentElement;
+      while (li && toc.contains(li)) {
+        if (li.tagName === "LI") li.classList.add("is-active", "active");
+        li = li.parentElement;
+      }
+      // Keep active item in TOC view without moving the page
+      var linkTop = pair.link.offsetTop;
+      var viewTop = toc.scrollTop;
+      var viewBottom = viewTop + toc.clientHeight;
+      if (linkTop < viewTop + 20) {
+        toc.scrollTop = Math.max(0, linkTop - 20);
+      } else if (linkTop + pair.link.offsetHeight > viewBottom - 20) {
+        toc.scrollTop = linkTop - toc.clientHeight + pair.link.offsetHeight + 20;
       }
     }
 
-    function setActiveById(id) {
-      if (!id || id === lastId) return;
-      lastId = id;
-      clearActive();
-
-      var entry = null;
-      for (var i = 0; i < items.length; i++) {
-        if (items[i].id === id) {
-          entry = items[i];
-          break;
+    function update() {
+      var offset = 120;
+      var current = pairs[0];
+      for (var i = 0; i < pairs.length; i++) {
+        if (pairs[i].el.getBoundingClientRect().top <= offset) {
+          current = pairs[i];
         }
       }
-      if (!entry) return;
-
-      entry.link.classList.add("active", "is-active");
-      var li = entry.link.closest("li");
-      while (li && tocRoot.contains(li)) {
-        li.classList.add("active", "is-active");
-        var parent = li.parentElement;
-        li = parent ? parent.closest("li") : null;
+      // bottom of page → last section
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 80
+      ) {
+        current = pairs[pairs.length - 1];
       }
-      scrollTocPanel(entry.link);
-    }
-
-    // Primary: IntersectionObserver — heading enters the upper reading band
-    if ("IntersectionObserver" in window) {
-      var visible = new Map();
-      var io = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (en) {
-            if (en.isIntersecting) {
-              visible.set(en.target, en.boundingClientRect.top);
-            } else {
-              visible.delete(en.target);
-            }
-          });
-
-          if (visible.size === 0) {
-            // Fallback while between sections: pick last heading above the band
-            pickByScroll();
-            return;
-          }
-
-          // Prefer the topmost visible heading in the band
-          var best = null;
-          var bestTop = Infinity;
-          visible.forEach(function (top, el) {
-            var t = el.getBoundingClientRect().top;
-            if (t < bestTop) {
-              bestTop = t;
-              best = el;
-            }
-          });
-          if (best) setActiveById(best.id);
-        },
-        {
-          // Activate when heading sits in the upper portion of the viewport
-          root: null,
-          rootMargin: "-12% 0px -70% 0px",
-          threshold: [0, 0.1, 0.5, 1]
-        }
-      );
-
-      items.forEach(function (it) {
-        io.observe(it.el);
-      });
-    }
-
-    function pickByScroll() {
-      var offset = 100;
-      var current = items[0];
-      for (var i = 0; i < items.length; i++) {
-        if (items[i].el.getBoundingClientRect().top - offset <= 0) {
-          current = items[i];
-        } else {
-          break;
-        }
-      }
-      var nearBottom =
-        window.innerHeight + window.pageYOffset >=
-        Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - 64;
-      if (nearBottom) current = items[items.length - 1];
-      if (current) setActiveById(current.id);
+      activate(current);
     }
 
     var ticking = false;
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(function () {
-        ticking = false;
-        pickByScroll();
-      });
-    }
-
-    // Always keep scroll fallback (covers IO edge cases)
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    pickByScroll();
-    window.setTimeout(pickByScroll, 300);
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          update();
+        });
+      },
+      { passive: true }
+    );
+    update();
   }
 
   function boot() {
